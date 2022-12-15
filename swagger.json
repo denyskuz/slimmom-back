@@ -1,0 +1,25 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Slim Mom OpenAPI 1.0.0",
+    "description": "Swagger SlimMom openAPI"
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [{"url": "http://localhost:30001"}],
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Products",
+      "description": "Products endpoints"
+    }
+  ]
+}
