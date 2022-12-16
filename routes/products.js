@@ -20,7 +20,7 @@ router.post("/", async (req, res, next) => {
     return next(BadRequest(error.message));
   }
   const products = await pS.find({
-    groupBloodNotAllowed: value.bloodType,
+    [`groupBloodNotAllowed.${value.bloodType}`]: true,
   });
   const kCal = productCalc(value);
 

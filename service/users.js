@@ -37,7 +37,7 @@ const usersShema = new Schema(
       required: [true, "Desired weight is required"],
     },
     bloodType: {
-      type: [Boolean],
+      type: Number,
       required: [true, "Blood type is required"],
     },
   },

@@ -176,36 +176,33 @@
           "height": {
             "type": "number",
             "format": "float",
+            "minimum": 10,
+            "maximum": 300,
             "example": "150"
           },
           "age": {
-            "type": "number",
-            "format": "float",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200,
             "example": "18"
           },
           "currentWeight": {
-            "type": "number",
-            "format": "float",
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 500,
             "example": "60"
           },
           "desiredWeight": {
-            "type": "number",
-            "format": "float",
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 500,
             "example": "50"
           },
           "bloodType": {
-            "type": "array",
-            "items": {
-              "oneOf": [
-                {},
-                {
-                  "type": "boolean"
-                }
-              ]
-            },
-            "minItems": 5,
-            "maxItems": 5,
-            "example": "[null, true, false, false, false]"
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "example": "1"
           }
         },
         "required": [

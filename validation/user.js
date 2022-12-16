@@ -1,29 +1,21 @@
 const Joi = require("joi");
 
 const userParamsShema = Joi.object({
-  height: Joi.number()
+  height: Joi.number().min(10).max(300)
     .required()
-    .error(new Error('Missing required "height" field'))
     .example("150"),
-  age: Joi.number()
+  age: Joi.number().integer().min(1).max(200)
     .required()
-    .error(new Error('Missing required "age" field'))
     .example("18"),
-  currentWeight: Joi.number()
+  currentWeight: Joi.number().integer().min(10).max(500)
     .required()
-    .error(new Error('Missing required "currentWeight" field'))
     .example("60"),
-  desiredWeight: Joi.number()
+  desiredWeight: Joi.number().integer().min(10).max(500)
     .required()
-    .error(new Error('Missing required "desiredWeight" field'))
     .example("50"),
-  bloodType: Joi.array()
-    .items(Joi.any(), Joi.boolean())
-    .length(5)
-    .has(Joi.boolean().valid(true))
+  bloodType: Joi.number().integer().min(1).max(4)
     .required()
-    .error(new Error('Missing required "bloodType" field'))
-    .example("[null, true, false, false, false]"),
+    .example("1"),
 }).required();
 
 module.exports = {
