@@ -1,7 +1,7 @@
 const express = require("express");
 const { isValidObjectId } = require("mongoose");
 const { BadRequest } = require("http-errors");
-const { nS } = require("../service");
+const { notesService } = require("../service");
 const router = express.Router();
 
 router.post("/", async (req, res, next) => {

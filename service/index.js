@@ -1,11 +1,11 @@
-const pS = require("./products");
-const uS = require("./users");
-const nS = require("./notes");
+const productsService = require("./products");
+const usersService = require("./users");
+const notesService = require("./notes");
 productCalc = require("./productCalc");
 
 module.exports = {
-  pS,
-  uS,
-  nS,
+  productsService,
+  usersService,
+  notesService,
   productCalc,
 };

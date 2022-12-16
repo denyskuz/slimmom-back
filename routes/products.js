@@ -1,7 +1,7 @@
 const express = require("express");
 const { isValidObjectId } = require("mongoose");
 const { BadRequest } = require("http-errors");
-const { pS, productCalc } = require("../service");
+const { productsService, productCalc } = require("../service");
 const { userParamsShema } = require("../validation");
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.post("/", async (req, res, next) => {
   if (error) {
     return next(BadRequest(error.message));
   }
-  const products = await pS.find({
+  const products = await productsService.find({
     [`groupBloodNotAllowed.${value.bloodType}`]: true,
   });
   const kCal = productCalc(value);
