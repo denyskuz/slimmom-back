@@ -5,10 +5,16 @@ const { pS, productCalc } = require("../service");
 const { userParamsShema } = require("../validation");
 const router = express.Router();
 
-/**
- * публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів
- */
 router.post("/", async (req, res, next) => {
+  // #swagger.tags = ['Products']
+  // #swagger.description = 'Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів'
+  // #swagger.responses[400] = { description: 'Bad request' }
+  /*  #swagger.parameters['body'] = {
+        in: 'body',
+        required: true,
+        schema: { $ref: '#/components/requestBodies/userParams' }}  
+  */
+
   const { error, value } = userParamsShema.validate(req.body);
   if (error) {
     return next(BadRequest(error.message));

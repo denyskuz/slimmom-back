@@ -5,21 +5,104 @@
     "title": "Slim Mom OpenAPI 1.0.0",
     "description": "Swagger SlimMom openAPI"
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
-  "servers": [{"url": "http://localhost:30001"}],
+  "servers": [
+    {
+      "url": "http://localhost:30001"
+    }
+  ],
+  "paths": {
+    "/api/products/": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/requestBodies/userParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "userParams": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "number",
+            "format": "float",
+            "example": "150"
+          },
+          "age": {
+            "type": "number",
+            "format": "float",
+            "example": "18"
+          },
+          "currentWeight": {
+            "type": "number",
+            "format": "float",
+            "example": "60"
+          },
+          "desiredWeight": {
+            "type": "number",
+            "format": "float",
+            "example": "50"
+          },
+          "bloodType": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {},
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "minItems": 5,
+            "maxItems": 5,
+            "example": "[null, true, false, false, false]"
+          }
+        },
+        "required": [
+          "height",
+          "age",
+          "currentWeight",
+          "desiredWeight",
+          "bloodType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
   "externalDocs": {
     "description": "Find out more about Swagger",
     "url": "http://swagger.io"
   },
-  "tags": [
+  "security": [
     {
-      "name": "Auth",
-      "description": "Authorization endpoints"
-    },
-    {
-      "name": "Products",
-      "description": "Products endpoints"
+      "bearerAuth": []
     }
   ]
 }
