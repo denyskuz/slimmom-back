@@ -35,6 +35,136 @@
             "description": "Bad request"
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Приватний енд-поінт на отримання денної норми ккал та списку нерекомендованих    продуктів, записує надану/отриману інформацію у БД",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "енд-поінт на пошук продуктів з БД по query-рядку",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Енд-поінт реєстрації",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Енд-поінт аутентифікації",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Енд-поінт виходу з облікового запису",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      }
+    },
+    "/api/diary/": {
+      "post": {
+        "tags": [
+          "Diary"
+        ],
+        "description": "Eнд-поінт на додавання з`їденого продукту у конкретний день",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Diary"
+        ],
+        "description": "Eнд-поінт на отримання всієї інформації щодо конкретного дня",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      }
+    },
+    "/api/diary/{id}": {
+      "delete": {
+        "tags": [
+          "Diary"
+        ],
+        "description": "Eнд-поінт для видалення з`їденого продукту в конкретний день",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
       }
     }
   },
