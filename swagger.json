@@ -5,21 +5,231 @@
     "title": "Slim Mom OpenAPI 1.0.0",
     "description": "Swagger SlimMom openAPI"
   },
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
-  "servers": [{"url": "http://localhost:30001"}],
+  "servers": [
+    {
+      "url": "http://localhost:30001"
+    }
+  ],
+  "paths": {
+    "/api/products/": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/requestBodies/userParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Приватний енд-поінт на отримання денної норми ккал та списку нерекомендованих    продуктів, записує надану/отриману інформацію у БД",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "енд-поінт на пошук продуктів з БД по query-рядку",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Енд-поінт реєстрації",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Енд-поінт аутентифікації",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Енд-поінт виходу з облікового запису",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      }
+    },
+    "/api/diary/": {
+      "post": {
+        "tags": [
+          "Diary"
+        ],
+        "description": "Eнд-поінт на додавання з`їденого продукту у конкретний день",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Diary"
+        ],
+        "description": "Eнд-поінт на отримання всієї інформації щодо конкретного дня",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      }
+    },
+    "/api/diary/{id}": {
+      "delete": {
+        "tags": [
+          "Diary"
+        ],
+        "description": "Eнд-поінт для видалення з`їденого продукту в конкретний день",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "requestBodies": {
+      "userParams": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "number",
+            "format": "float",
+            "minimum": 10,
+            "maximum": 300,
+            "example": "150"
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200,
+            "example": "18"
+          },
+          "currentWeight": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 500,
+            "example": "60"
+          },
+          "desiredWeight": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 500,
+            "example": "50"
+          },
+          "bloodType": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "example": "1"
+          }
+        },
+        "required": [
+          "height",
+          "age",
+          "currentWeight",
+          "desiredWeight",
+          "bloodType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
   "externalDocs": {
     "description": "Find out more about Swagger",
     "url": "http://swagger.io"
   },
-  "tags": [
+  "security": [
     {
-      "name": "Auth",
-      "description": "Authorization endpoints"
-    },
-    {
-      "name": "Products",
-      "description": "Products endpoints"
+      "bearerAuth": []
     }
   ]
 }
