@@ -20,7 +20,7 @@ router.post("/login", async (req, res, next) => {
     return next();
 });
 
-router.post("/logout", async (req, res, next) => {
+router.get("/logout", async (req, res, next) => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'Енд-поінт виходу з облікового запису'
   // #swagger.responses[401] = { description: 'Missing header with authorization token' }

@@ -96,7 +96,7 @@
       }
     },
     "/api/auth/logout": {
-      "post": {
+      "get": {
         "tags": [
           "Auth"
         ],
