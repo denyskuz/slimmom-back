@@ -7,7 +7,13 @@
   },
   "servers": [
     {
-      "url": "http://localhost:30001"
+      "url": "https://slimmom-s41d.onrender.com"
+    },
+    {
+      "url": "http://localhost:3000"
+    },
+    {
+      "url": "http://localhost:3001"
     }
   ],
   "paths": {
@@ -17,22 +23,23 @@
           "Products"
         ],
         "description": "Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/requestBodies/userParams"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
           },
           "400": {
             "description": "Bad request"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/userParams"
+              }
+            }
           }
         }
       },

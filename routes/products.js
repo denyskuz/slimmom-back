@@ -9,10 +9,13 @@ router.post("/", async (req, res, next) => {
   // #swagger.tags = ['Products']
   // #swagger.description = 'Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів'
   // #swagger.responses[400] = { description: 'Bad request' }
-  /*  #swagger.parameters['body'] = {
-        in: 'body',
-        required: true,
-        schema: { $ref: '#/components/requestBodies/userParams' }}  
+  // #swagger.consumes = ['multipart/form-data']
+  /* #swagger.requestBody = {
+      required: true,
+      content: {
+        "application/json": {
+            schema: { $ref: '#/components/requestBodies/userParams' },
+        }}}
   */
 
   const { error, value } = userParamsShema.validate(req.body);

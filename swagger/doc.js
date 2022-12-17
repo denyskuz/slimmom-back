@@ -9,7 +9,13 @@ const doc = {
   },
   servers: [
     {
-      url: `http://localhost:30001`,
+      url: `https://slimmom-s41d.onrender.com`,
+    },
+    {
+      url: `http://localhost:3000`,
+    },
+    {
+      url: `http://localhost:3001`,
     },
   ],
   externalDocs: {
