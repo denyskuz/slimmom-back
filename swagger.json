@@ -124,6 +124,9 @@
         "description": "Eнд-поінт на додавання з`їденого продукту у конкретний день",
         "parameters": [],
         "responses": {
+          "201": {
+            "description": "Created"
+          },
           "400": {
             "description": "Bad request"
           },
@@ -139,6 +142,9 @@
         "description": "Eнд-поінт на отримання всієї інформації щодо конкретного дня",
         "parameters": [],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad request"
           },
@@ -165,6 +171,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad request"
           },
