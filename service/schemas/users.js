@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
+const bCrypt = require("bcryptjs");
 
-const usersShema = new Schema(
+const usersSchema = new Schema(
   {
     name: {
       type: String,
@@ -21,24 +22,19 @@ const usersShema = new Schema(
       unique: true,
     },
     height: {
-      type: Number,
-      required: [true, "Height is required"],
+      type: Number
     },
     age: {
-      type: Number,
-      required: [true, "Age is required"],
+      type: Number
     },
     currentWeight: {
-      type: Number,
-      required: [true, "Current weight is required"],
+      type: Number
     },
     desiredWeight: {
-      type: Number,
-      required: [true, "Desired weight is required"],
+      type: Number
     },
     bloodType: {
-      type: Number,
-      required: [true, "Blood type is required"],
+      type: Number
     },
   },
   {
@@ -46,6 +42,14 @@ const usersShema = new Schema(
   }
 );
 
-const usersServise = model("users", usersShema);
+usersSchema.methods.setPassword = function(password) {
+  this.password = bCrypt.hashSync(password, bCrypt.genSaltSync(6));
+};
 
-module.exports = usersServise;
+usersSchema.methods.validPassword = function(password) {
+  return bCrypt.compareSync(password, this.password);
+};
+
+const usersService = model("users", usersSchema);
+
+module.exports = usersService;

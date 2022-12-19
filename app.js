@@ -15,6 +15,8 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
+
+require('./config/config-passport')
 app.use("/api/products", products);
 app.use("/api/auth", auth);
 app.use("/api/diary", diary);

@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const userParamsShema = Joi.object({
+const userParamsSchema = Joi.object({
   height: Joi.number().min(10).max(300)
     .required()
     .example("150"),
@@ -18,6 +18,20 @@ const userParamsShema = Joi.object({
     .example("1"),
 }).required();
 
+
+const loginSchema = Joi.object({
+  password: Joi.string().min(6).required(),
+  email: Joi.string().required(),
+});
+
+const registrationSchema = Joi.object({
+  password: Joi.string().min(6).required(),
+  email: Joi.string().required(),
+  name: Joi.string().required(),
+});
+
 module.exports = {
-  userParamsShema,
+  userParamsSchema,
+  loginSchema,
+  registrationSchema
 };
