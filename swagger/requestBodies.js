@@ -1,9 +1,9 @@
 const j2s = require("joi-to-swagger");
 const {
-  userParamsShema
+  userParamsSchema
 } = require("../validation");
 
-const { swagger: userParams } = j2s(userParamsShema);
+const { swagger: userParams } = j2s(userParamsSchema);
 
 const requestBodies = {
   userParams,
