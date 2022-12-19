@@ -1,7 +1,7 @@
-const productsService = require("./products");
-const usersService = require("./users");
-const notesService = require("./notes");
-productCalc = require("./productCalc");
+const productsService = require("./schemas/products");
+const usersService = require("./schemas/users");
+const notesService = require("./schemas/notes");
+productCalc = require("./schemas/productCalc");
 
 module.exports = {
   productsService,

@@ -2,7 +2,7 @@ const express = require("express");
 const { isValidObjectId } = require("mongoose");
 const { BadRequest } = require("http-errors");
 const { productsService, productCalc } = require("../service");
-const { userParamsShema } = require("../validation");
+const { userParamsSchema } = require("../validation");
 const router = express.Router();
 
 router.post("/", async (req, res, next) => {
@@ -18,7 +18,7 @@ router.post("/", async (req, res, next) => {
         }}}
   */
 
-  const { error, value } = userParamsShema.validate(req.body);
+  const { error, value } = userParamsSchema.validate(req.body);
   if (error) {
     return next(BadRequest(error.message));
   }
