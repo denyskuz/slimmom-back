@@ -10,7 +10,7 @@ To run this project, you will need to add the following environment variables to
 
 `DB_HOST` - path to mongo db 
 
-`SECRET_KEY` - secret key for JWT auth
+`SECRET` - secret key for JWT auth
 
 
 
