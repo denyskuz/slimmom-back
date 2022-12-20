@@ -39,7 +39,7 @@ router.post("/registration", async (req, res, next) => {
     return next();
 });
 
-router.post('/login', auth, async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
   const { email, password } = req.body;
   try { 
     await loginSchema.validateAsync(req.body);
@@ -53,24 +53,30 @@ router.post('/login', auth, async (req, res, next) => {
     }
     const accessToken = jwt.sign(payload, secret, { expiresIn: '1h' })
     await usersService.findByIdAndUpdate(user._id, { accessToken });
-
+    const { name, age, height, currentWeight, bloodType, desiredWeight } = user;
     res.json({
       status: 'success',
       data: {
         accessToken,
         user: {
-          email
+          email,
+          name,
+          age,
+          height,
+          currentWeight,
+          bloodType,
+          desiredWeight
         }
       },
     })
   } catch (err) { 
-    console.log(err);
+    console.log('err ====>', err);
     next(err)
   }
 
-})
+}) 
 
-router.get("/logout", async (req, res, next) => {
+router.get("/logout", auth, async (req, res, next) => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'Енд-поінт виходу з облікового запису'
   // #swagger.responses[401] = { description: 'Missing header with authorization token' }
