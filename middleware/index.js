@@ -1,9 +1,9 @@
-const auth = require("./auth");
-const tryCatchWrapper = require("./tryCatchWrapper");
-const handleErrors = require("./handleErrors");
+const auth = require('./auth');
+const handleErrors = require('./handleErrors');
+const tryCatchWrapper = require('./tryCatchWrapper');
 
 module.exports = {
   auth,
-  tryCatchWrapper,
   handleErrors,
+  tryCatchWrapper,
 };

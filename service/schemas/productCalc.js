@@ -1,4 +1,4 @@
-const productCalc = ({currentWeight, height, age, desiredWeight}) => {
+const productCalc = ({ currentWeight, height, age, desiredWeight }) => {
   return (
     10 * currentWeight +
     6.25 * height -

@@ -50,11 +50,24 @@
         "description": "Приватний енд-поінт на отримання денної норми ккал та списку нерекомендованих    продуктів, записує надану/отриману інформацію у БД",
         "parameters": [],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad request"
           },
           "401": {
             "description": "Missing header with authorization token"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/userParams"
+              }
+            }
           }
         }
       },
@@ -63,53 +76,29 @@
           "Products"
         ],
         "description": "енд-поінт на пошук продуктів з БД по query-рядку",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad request"
           },
-          "401": {
-            "description": "Missing header with authorization token"
-          }
-        }
-      }
-    },
-    "/api/auth/register": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Енд-поінт реєстрації",
-        "parameters": [],
-        "responses": {
-          "400": {
-            "description": "Bad request"
-          }
-        }
-      }
-    },
-    "/api/auth/login": {
-      "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Енд-поінт аутентифікації",
-        "parameters": [],
-        "responses": {
-          "400": {
-            "description": "Bad request"
-          }
-        }
-      }
-    },
-    "/api/auth/logout": {
-      "get": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Енд-поінт виходу з облікового запису",
-        "parameters": [],
-        "responses": {
           "401": {
             "description": "Missing header with authorization token"
           }
@@ -124,21 +113,49 @@
         "description": "Eнд-поінт на додавання з`їденого продукту у конкретний день",
         "parameters": [],
         "responses": {
+          "201": {
+            "description": "Created"
+          },
           "400": {
             "description": "Bad request"
           },
           "401": {
             "description": "Missing header with authorization token"
           }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/noteParams"
+              }
+            }
+          }
         }
-      },
+      }
+    },
+    "/api/diary/{date}": {
       "get": {
         "tags": [
           "Diary"
         ],
         "description": "Eнд-поінт на отримання всієї інформації щодо конкретного дня",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2022-21-12"
+          }
+        ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad request"
           },
@@ -148,7 +165,7 @@
         }
       }
     },
-    "/api/diary/{id}": {
+    "/api/diary/{noteId}": {
       "delete": {
         "tags": [
           "Diary"
@@ -156,7 +173,7 @@
         "description": "Eнд-поінт для видалення з`їденого продукту в конкретний день",
         "parameters": [
           {
-            "name": "id",
+            "name": "noteId",
             "in": "path",
             "required": true,
             "schema": {
@@ -165,8 +182,102 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "400": {
             "description": "Bad request"
+          },
+          "401": {
+            "description": "Missing header with authorization token"
+          }
+        }
+      }
+    },
+    "api/auth/registration": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Eнд-поінт реєстрації",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/userRegister"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "Conflict, email in use"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/registrationParams"
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Eнд-поінт аутентифікації",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/responses/userLogin"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Incorrect login or password"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/loginParams"
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/auth/logout": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "Енд-поінт виходу з облікового запису",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "Success response"
           },
           "401": {
             "description": "Missing header with authorization token"
@@ -220,6 +331,195 @@
           "bloodType"
         ],
         "additionalProperties": false
+      },
+      "noteParams": {
+        "type": "object",
+        "properties": {
+          "weight": {
+            "type": "number",
+            "format": "float",
+            "minimum": 10,
+            "maximum": 500,
+            "example": "80"
+          },
+          "product": {
+            "type": "string",
+            "example": "639aa3fb5e433813b2d2a1d8"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-12-21"
+          }
+        },
+        "required": [
+          "weight",
+          "product",
+          "date"
+        ],
+        "additionalProperties": false
+      },
+      "loginParams": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "Dikfj434io"
+          },
+          "email": {
+            "type": "string",
+            "example": "nic@gmail.com"
+          }
+        },
+        "required": [
+          "password",
+          "email"
+        ],
+        "additionalProperties": false
+      },
+      "registrationParams": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "example": "Dikfj434io"
+          },
+          "email": {
+            "type": "string",
+            "example": "nic@gmail.com"
+          },
+          "name": {
+            "type": "string",
+            "example": "Nic"
+          },
+          "height": {
+            "type": "number",
+            "format": "float",
+            "minimum": 10,
+            "maximum": 300,
+            "example": "150"
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200,
+            "example": "18"
+          },
+          "currentWeight": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 500,
+            "example": "60"
+          },
+          "desiredWeight": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 500,
+            "example": "50"
+          },
+          "bloodType": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "example": "1"
+          }
+        },
+        "required": [
+          "password",
+          "email",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "responses": {
+      "userRegister": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "code": {
+            "type": "number",
+            "example": "201"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Registration successful"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "nic@gmail.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Nic"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "userLogin": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "accessToken": {
+                "type": "string",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYTI2NDhkYmYwOWUwNzA3NTVkODliZSIsImVtYWlsIjoidXNlckBnbWFpbC5jb20iLCJpYXQiOjE2NzE1ODgxNDksImV4cCI6MTY3MTU5MTc0OX0.jJSyyA21txMSU4mw-TEPK1afpF2v9--jICFNDnuLwKM"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "nic@gmail.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Nic"
+                  },
+                  "age": {
+                    "type": "number",
+                    "example": "18"
+                  },
+                  "height": {
+                    "type": "number",
+                    "example": "150"
+                  },
+                  "currentWeight": {
+                    "type": "number",
+                    "example": "60"
+                  },
+                  "desiredWeight": {
+                    "type": "number",
+                    "example": "50"
+                  },
+                  "bloodType": {
+                    "type": "number",
+                    "example": "1"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "securitySchemes": {
