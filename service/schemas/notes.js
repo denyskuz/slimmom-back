@@ -20,10 +20,6 @@ const notesShema = new Schema(
       type: Date,
       default: Date.now(),
     },
-    kCal: {
-      type: Number,
-      required: [true, "Product kilo calories is required"],
-    },
   },
   {
     versionKey: false,

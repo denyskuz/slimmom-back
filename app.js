@@ -7,19 +7,20 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 
 const { products, auth, diary } = require("./routes");
+const { tryCatchWrapper, handleErrors } = require("./middleware");
 
 const app = express();
 const formatsLogger = process.env.NODE_ENV === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-require('./config/config-passport')
-app.use("/api/products", products);
+require("./config/config-passport");
+app.use("/api/products", tryCatchWrapper(products));
 app.use("/api/auth", auth);
-app.use("/api/diary", diary);
+app.use("/api/diary", tryCatchWrapper(diary));
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -27,22 +28,7 @@ app.use((req, res) => {
   res.status(400).json({ message: "Not found" });
 });
 
-app.use((err, req, res, next) => {
-  if (err.name === "ValidationError") {
-    res.status(400).json({
-      message: err.message,
-    });
-  }
-  if (err.status) {
-    return res.status(err.status).json({
-      message: err.message,
-    });
-  }
-
-  return res.status(500).json({
-    message: "Internal server error",
-  });
-});
+handleErrors(app);
 
 module.exports = {
   app,
