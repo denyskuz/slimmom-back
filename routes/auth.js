@@ -11,7 +11,6 @@ require('dotenv').config();
 const secret = process.env.SECRET
 
 router.post("/registration", async (req, res, next) => {
-  // #swagger.tags = ['Auth']
   const {name, email, password } = req.body
   const accessToken = nanoid();
   try {
@@ -21,7 +20,6 @@ router.post("/registration", async (req, res, next) => {
     await newUser.save()
     res.status(201).json({
         status: 'success',
-        code: 201,
         data: {
           message: 'Registration successful',
           user: {
@@ -54,6 +52,7 @@ router.post('/login', async (req, res, next) => {
     const accessToken = jwt.sign(payload, secret, { expiresIn: '1h' })
     await usersService.findByIdAndUpdate(user._id, { accessToken });
     const { name, age, height, currentWeight, bloodType, desiredWeight } = user;
+
     res.json({
       status: 'success',
       data: {
@@ -70,18 +69,22 @@ router.post('/login', async (req, res, next) => {
       },
     })
   } catch (err) { 
-    console.log('err ====>', err);
     next(err)
   }
 
 }) 
 
-router.get("/logout", auth, async (req, res, next) => {
-  // #swagger.tags = ['Auth']
-  // #swagger.description = 'Енд-поінт виходу з облікового запису'
-  // #swagger.responses[401] = { description: 'Missing header with authorization token' }
-
-    return next();
+router.post("/logout", auth, async (req, res, next) => {
+  try {
+    const { user } = req;
+    console.log('user', user)
+    user.accessToken = null;
+    await usersService.findByIdAndUpdate(user._id, user);
+    return res.status(204).end();
+    
+  } catch (err) { 
+    next(err)
+  }
 });
 
 module.exports = router;

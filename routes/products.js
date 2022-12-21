@@ -6,23 +6,10 @@ const { userParamsSchema } = require("../validation");
 const router = express.Router();
 
 router.post("/", async (req, res, next) => {
-  // #swagger.tags = ['Products']
-  // #swagger.description = 'Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів'
-  // #swagger.responses[400] = { description: 'Bad request' }
-  // #swagger.consumes = ['multipart/form-data']
-  /* #swagger.requestBody = {
-      required: true,
-      content: {
-        "application/json": {
-            schema: { $ref: '#/components/requestBodies/userParams' },
-        }}}
-  */
-
   const { error, value } = userParamsSchema.validate(req.body);
   if (error) {
     return next(BadRequest(error.message));
-  }
-  const products = await productsService.find({
+  }  const products = await productsService.find({
     [`groupBloodNotAllowed.${value.bloodType}`]: true,
   });
   const kCal = productCalc(value);

@@ -19,27 +19,11 @@
   "paths": {
     "/api/products/": {
       "post": {
-        "tags": [
-          "Products"
-        ],
-        "description": "Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів",
+        "description": "",
         "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/requestBodies/userParams"
-              }
-            }
           }
         }
       },
@@ -47,7 +31,7 @@
         "tags": [
           "Products"
         ],
-        "description": "Приватний енд-поінт на отримання денної норми ккал та списку нерекомендованих    продуктів, записує надану/отриману інформацію у БД",
+        "description": "Приватний енд-поінт на отримання денної норми ккал та списку нерекомендованих   продуктів, записує надану/отриману інформацію у БД",
         "parameters": [],
         "responses": {
           "400": {
@@ -74,81 +58,108 @@
         }
       }
     },
-    "/api/auth/register": {
+    "/api/auth/registration": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Енд-поінт реєстрації",
+        "description": "",
         "parameters": [],
         "responses": {
-          "400": {
-            "description": "Bad request"
+          "201": {
+            "description": "Created"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/auth/login": {
       "post": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Енд-поінт аутентифікації",
+        "description": "",
         "parameters": [],
         "responses": {
-          "400": {
-            "description": "Bad request"
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/auth/logout": {
-      "get": {
-        "tags": [
-          "Auth"
-        ],
-        "description": "Енд-поінт виходу з облікового запису",
+      "post": {
+        "description": "",
         "parameters": [],
         "responses": {
-          "401": {
-            "description": "Missing header with authorization token"
+          "204": {
+            "description": "No Content"
           }
         }
       }
     },
     "/api/diary/": {
       "post": {
-        "tags": [
-          "Diary"
-        ],
-        "description": "Eнд-поінт на додавання з`їденого продукту у конкретний день",
+        "description": "",
         "parameters": [],
         "responses": {
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Missing header with authorization token"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Diary"
-        ],
-        "description": "Eнд-поінт на отримання всієї інформації щодо конкретного дня",
-        "parameters": [],
-        "responses": {
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Missing header with authorization token"
+          "201": {
+            "description": "Created"
           }
         }
       }
     },
-    "/api/diary/{id}": {
+    "/api/diary/{date}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/diary/{noteId}": {
       "delete": {
         "tags": [
           "Diary"
@@ -156,7 +167,7 @@
         "description": "Eнд-поінт для видалення з`їденого продукту в конкретний день",
         "parameters": [
           {
-            "name": "id",
+            "name": "noteId",
             "in": "path",
             "required": true,
             "schema": {

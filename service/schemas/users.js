@@ -22,19 +22,26 @@ const usersSchema = new Schema(
       unique: true,
     },
     height: {
-      type: Number
+      type: Number,
+      default: 0
     },
     age: {
-      type: Number
+      type: Number,
+      default: 0
     },
     currentWeight: {
-      type: Number
+      type: Number,
+      default: 0
     },
     desiredWeight: {
-      type: Number
+      type: Number,
+      default: 0
+
     },
     bloodType: {
-      type: Number
+      type: Number,
+      default: 0
+
     },
   },
   {
