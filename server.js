@@ -11,7 +11,7 @@ const doc = require('./swagger/doc');
 const PORT = process.env.PORT || 3000;
 const uriDb = process.env.DB_HOST;
 
-swaggerAutogen('./swagger.json', ['./app.js', './swagger/auth.js'], doc).then(
+swaggerAutogen('./swagger.json', ['./swagger/*'], doc).then(
   () => {
     const { app } = require('./app');
     mongoose.Promise = global.Promise;

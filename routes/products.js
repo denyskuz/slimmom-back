@@ -6,17 +6,6 @@ const { auth, tryCatchWrapper } = require('../middleware');
 const router = express.Router();
 
 router.post('/', async (req, res, next) => {
-  // #swagger.tags = ['Products']
-  // #swagger.description = 'Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів'
-  // #swagger.responses[400] = { description: 'Bad request' }
-  /* #swagger.requestBody = {
-      required: true,
-      content: {
-        "application/json": {
-            schema: { $ref: '#/components/requestBodies/userParams' },
-        }}}
-  */
-
   const { error, value } = userParamsSchema.validate(req.body);
   if (error) {
     return next(BadRequest(error.message));
@@ -33,19 +22,6 @@ router.post('/', async (req, res, next) => {
 });
 
 router.patch('/', auth, async (req, res, next) => {
-  // #swagger.tags = ['Products']
-  /* #swagger.description = 'Приватний енд-поінт на отримання денної норми ккал та списку нерекомендованих 
-  продуктів, записує надану/отриману інформацію у БД' */
-  // #swagger.responses[400] = { description: 'Bad request' }
-  // #swagger.responses[401] = { description: 'Missing header with authorization token' }
-  /* #swagger.requestBody = {
-      required: true,
-      content: {
-        "application/json": {
-            schema: { $ref: '#/components/requestBodies/userParams' },
-        }}}
-  */
-
   const { error, value } = userParamsSchema.validate(req.body);
   if (error) {
     return next(BadRequest(error.message));
@@ -68,11 +44,6 @@ router.patch('/', auth, async (req, res, next) => {
 });
 
 router.get('/', auth, async (req, res, next) => {
-  // #swagger.tags = ['Products']
-  // #swagger.description = 'енд-поінт на пошук продуктів з БД по query-рядку'
-  // #swagger.responses[400] = { description: 'Bad request' }
-  // #swagger.responses[401] = { description: 'Missing header with authorization token' }
-
   const { error } = productsQuerySchema.validate(req.query);
   if (error) {
     return next(BadRequest(error.message));

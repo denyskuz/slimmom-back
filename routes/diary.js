@@ -9,17 +9,6 @@ const router = express.Router();
 router.use(auth);
 
 router.post('/', async (req, res, next) => {
-  // #swagger.tags = ['Diary']
-  // #swagger.description = 'Eнд-поінт на додавання з`їденого продукту у конкретний день'
-  // #swagger.responses[400] = { description: 'Bad request' }
-  // #swagger.responses[401] = { description: 'Missing header with authorization token' }
-  /* #swagger.requestBody = {
-      required: true,
-      content: {
-        "application/json": {
-            schema: { $ref: '#/components/requestBodies/noteParams' },
-        }}}
-  */
   try {
     await noteParamsSchema.validateAsync(req.body);
     const { weight, product, date } = req.body;
@@ -45,11 +34,6 @@ router.post('/', async (req, res, next) => {
 });
 
 router.get('/:date', async (req, res, next) => {
-  // #swagger.tags = ['Diary']
-  // #swagger.description = 'Eнд-поінт на отримання всієї інформації щодо конкретного дня'
-  // #swagger.responses[400] = { description: 'Bad request' }
-  // #swagger.responses[401] = { description: 'Missing header with authorization token' }
-  // #swagger.parameters['date'] = { example: '2022-21-12', }
   try {
     const date = req.params.date;
     await noteDateSchema.validateAsync(date);
@@ -78,10 +62,6 @@ router.get('/:date', async (req, res, next) => {
 });
 
 router.delete('/:noteId', async (req, res, next) => {
-  // #swagger.tags = ['Diary']
-  // #swagger.description = 'Eнд-поінт для видалення з`їденого продукту в конкретний день'
-  // #swagger.responses[400] = { description: 'Bad request' }
-  // #swagger.responses[401] = { description: 'Missing header with authorization token' }
   try {
     const noteId = req.params.noteId;
     if (!isValidObjectId(noteId)) {
