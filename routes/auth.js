@@ -5,7 +5,7 @@ const router = express.Router();
 const { nanoid } = require('nanoid');
 const jwt = require('jsonwebtoken');
 const { loginSchema, registrationSchema } = require('../validation');
-const { auth, tryCatchWrapper } = require('../middleware');
+const { auth } = require('../middleware');
 
 const secret = process.env.SECRET;
 
@@ -19,13 +19,12 @@ router.post('/registration', async (req, res, next) => {
     newUser.setPassword(password);
     await newUser.save();
     res.status(201).json({
-        status: 'success',
-        data: {
-          message: 'Registration successful',
-          user: {
-            email,
-            name
-          }
+      status: 'success',
+      data: {
+        message: 'Registration successful',
+        user: {
+          email,
+          name,
         },
       },
     });
@@ -33,9 +32,9 @@ router.post('/registration', async (req, res, next) => {
     if (error.message.includes('duplicate key error collection')) {
       next(Conflict('User with this email already registered'));
     }
-    next(BadRequest(error.message));
+    next(error);
   }
-  next();
+  return next();
 });
 
 router.post('/login', async (req, res, next) => {
@@ -70,9 +69,9 @@ router.post('/login', async (req, res, next) => {
           desiredWeight,
         },
       },
-    })
-  } catch (err) { 
-    next(err)
+    });
+  } catch (err) {
+    next(err);
   }
   next();
 });
@@ -83,10 +82,9 @@ router.get('/logout', auth, async (req, res, next) => {
     const { _id } = req.user;
     await usersService.findByIdAndUpdate(_id, { accessToken: '' });
     return res.status(204).json();
-  } catch (err) {
-    next(BadRequest(err.message));
+  } catch (err) { 
+    next(err)
   }
-  next();
 });
 
-module.exports = tryCatchWrapper(router);
+module.exports = router;
