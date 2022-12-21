@@ -19,54 +19,29 @@
   "paths": {
     "/api/products/": {
       "post": {
-        "tags": [
-          "Products"
-        ],
-        "description": "Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів",
+        "description": "",
         "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/requestBodies/userParams"
-              }
-            }
           }
         }
       },
-      "patch": {
+      "get": {
         "tags": [
           "Products"
         ],
-        "description": "Приватний енд-поінт на отримання денної норми ккал та списку нерекомендованих    продуктів, записує надану/отриману інформацію у БД",
+        "description": "Приватний енд-поінт на отримання денної норми ккал та списку нерекомендованих   продуктів, записує надану/отриману інформацію у БД",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "400": {
             "description": "Bad request"
           },
-          "401": {
-            "description": "Missing header with authorization token"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/requestBodies/userParams"
-              }
+          {
+            "name": "category",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         }
@@ -76,22 +51,7 @@
           "Products"
         ],
         "description": "енд-поінт на пошук продуктів з БД по query-рядку",
-        "parameters": [
-          {
-            "name": "title",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "category",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -105,42 +65,90 @@
         }
       }
     },
-    "/api/diary/": {
+    "/api/auth/registration": {
       "post": {
-        "tags": [
-          "Diary"
-        ],
-        "description": "Eнд-поінт на додавання з`їденого продукту у конкретний день",
+        "description": "",
         "parameters": [],
         "responses": {
           "201": {
             "description": "Created"
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Missing header with authorization token"
           }
         },
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/requestBodies/noteParams"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
               }
             }
           }
         }
       }
     },
+    "/api/auth/login": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/api/diary/": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
     "/api/diary/{date}": {
       "get": {
-        "tags": [
-          "Diary"
-        ],
-        "description": "Eнд-поінт на отримання всієї інформації щодо конкретного дня",
+        "description": "",
         "parameters": [
           {
             "name": "date",
@@ -148,19 +156,12 @@
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "2022-21-12"
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad request"
-          },
-          "401": {
-            "description": "Missing header with authorization token"
           }
         }
       }
@@ -182,9 +183,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "400": {
             "description": "Bad request"
           },

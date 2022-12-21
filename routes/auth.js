@@ -19,13 +19,13 @@ router.post('/registration', async (req, res, next) => {
     newUser.setPassword(password);
     await newUser.save();
     res.status(201).json({
-      status: 'success',
-      code: 201,
-      data: {
-        message: 'Registration successful',
-        user: {
-          email,
-          name,
+        status: 'success',
+        data: {
+          message: 'Registration successful',
+          user: {
+            email,
+            name
+          }
         },
       },
     });
@@ -55,6 +55,7 @@ router.post('/login', async (req, res, next) => {
     const accessToken = jwt.sign(payload, secret, { expiresIn: '1h' });
     await usersService.findByIdAndUpdate(user._id, { accessToken });
     const { name, age, height, currentWeight, bloodType, desiredWeight } = user;
+
     res.json({
       status: 'success',
       data: {
@@ -69,9 +70,9 @@ router.post('/login', async (req, res, next) => {
           desiredWeight,
         },
       },
-    });
-  } catch (err) {
-    next(BadRequest(err.message));
+    })
+  } catch (err) { 
+    next(err)
   }
   next();
 });
