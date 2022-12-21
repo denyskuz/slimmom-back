@@ -3,7 +3,6 @@ const responses = {
     type: 'object',
     properties: {
       status: { type: 'string', example: 'success' },
-      code: { type: 'number', example: '201' },
       data: {
         type: 'object',
         properties: {
