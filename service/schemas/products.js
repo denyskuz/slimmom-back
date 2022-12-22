@@ -1,12 +1,12 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 const productsSchema = new Schema({
   categories: [String],
   weight: Number,
   title: {
-      ru: String,
-      ua: String,
-    },
+    ru: String,
+    ua: String,
+  },
   calories: Number,
   groupBloodNotAllowed: {
     0: {},
@@ -17,5 +17,5 @@ const productsSchema = new Schema({
   },
 });
 
-const productsService = model("products", productsSchema);
+const productsService = model('products', productsSchema);
 module.exports = productsService;

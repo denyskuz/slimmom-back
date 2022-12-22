@@ -1,43 +1,45 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
-const cfonts = require("cfonts");
-const chalk = require("chalk");
-const swaggerAutogen = require("swagger-autogen")({
-  openapi: "3.0.3",
+require('dotenv').config();
+const mongoose = require('mongoose');
+const cfonts = require('cfonts');
+const chalk = require('chalk');
+const swaggerAutogen = require('swagger-autogen')({
+  openapi: '3.0.3',
   disableLogs: false,
 });
-const doc = require("./swagger/doc");
+const doc = require('./swagger/doc');
 
 const PORT = process.env.PORT || 3000;
 const uriDb = process.env.DB_HOST;
 
-swaggerAutogen("./swagger.json", ["./app.js"], doc).then(() => {
-  const { app } = require("./app");
-  mongoose.Promise = global.Promise;
-  const connection = mongoose.connect(uriDb);
-  connection
-    .then(() => {
-      console.log(
-        chalk.green("\n====== Database connection successful ======")
-      );
-      app.listen(PORT, function () {
+swaggerAutogen('./swagger.json', ['./app.js', './swagger/auth.js'], doc).then(
+  () => {
+    const { app } = require('./app');
+    mongoose.Promise = global.Promise;
+    const connection = mongoose.connect(uriDb);
+    connection
+      .then(() => {
         console.log(
-          chalk.green(
-            `\n======Server running. Use our API on port: ${PORT}======`
-          )
+          chalk.green('\n====== Database connection successful ======')
         );
-        cfonts.say("SlimMom openAPI", {
-          font: "simple",
-          align: "center",
-          gradient: ["blue", "yellow"],
-          transitionGradient: true,
+        app.listen(PORT, function () {
+          console.log(
+            chalk.green(
+              `\n======Server running. Use our API on port: ${PORT}======`
+            )
+          );
+          cfonts.say('SlimMom openAPI', {
+            font: 'simple',
+            align: 'center',
+            gradient: ['blue', 'yellow'],
+            transitionGradient: true,
+          });
         });
+      })
+      .catch(err => {
+        console.log(
+          chalk.red(`Server not running. Error message: ${err.message}`)
+        );
+        process.exit(1);
       });
-    })
-    .catch((err) => {
-      console.log(
-        chalk.red(`Server not running. Error message: ${err.message}`)
-      );
-      process.exit(1);
-    });
-});
+  }
+);

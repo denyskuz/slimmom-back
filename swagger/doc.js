@@ -1,11 +1,12 @@
-const { version } = require("../package.json");
-const requestBodies= require("./requestBodies");
+const { version } = require('../package.json');
+const requestBodies = require('./requestBodies');
+const responses = require('./responses');
 
 const doc = {
   info: {
     version,
-    title: "Slim Mom OpenAPI "+ version,
-    description: "Swagger SlimMom openAPI",
+    title: 'Slim Mom OpenAPI ' + version,
+    description: 'Swagger SlimMom openAPI',
   },
   servers: [
     {
@@ -19,16 +20,17 @@ const doc = {
     },
   ],
   externalDocs: {
-    description: "Find out more about Swagger",
-    url: "http://swagger.io",
+    description: 'Find out more about Swagger',
+    url: 'http://swagger.io',
   },
   components: {
     requestBodies,
+    responses,
     securitySchemes: {
       bearerAuth: {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "JWT",
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
       },
     },
   },

@@ -7,6 +7,7 @@
     "start:dev": "cross-env NODE_ENV=development nodemon ./server.js --ignore swagger.json",
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js",
+    "prettier": "prettier --config .prettierrc --write ./**/*.{js,jsx}",
     "test": "jest"
   },
   "dependencies": {
