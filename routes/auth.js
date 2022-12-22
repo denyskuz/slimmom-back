@@ -10,7 +10,6 @@ const { auth } = require('../middleware');
 const secret = process.env.SECRET;
 
 router.post('/registration', async (req, res, next) => {
-  // #swagger.ignore = true
   const { name, email, password } = req.body;
   const accessToken = nanoid();
   try {
@@ -38,7 +37,6 @@ router.post('/registration', async (req, res, next) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  // #swagger.ignore = true
   const { email, password } = req.body;
   try {
     await loginSchema.validateAsync(req.body);
@@ -77,7 +75,6 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/logout', auth, async (req, res, next) => {
-  // #swagger.ignore = true
   try {
     const { _id } = req.user;
     await usersService.findByIdAndUpdate(_id, { accessToken: '' });
