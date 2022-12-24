@@ -1,4 +1,4 @@
-router.post('api/products/', () => {
+router.post('/api/products/', () => {
   // #swagger.tags = ['Products']
   // #swagger.description = 'Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів'
   /* #swagger.responses[200] = {
@@ -17,7 +17,7 @@ router.post('api/products/', () => {
   */
 });
 
-router.patch('api/products/', () => {
+router.patch('/api/products/', () => {
   // #swagger.tags = ['Products']
   /* #swagger.description = 'Приватний енд-поінт на отримання денної норми ккал та списку нерекомендованих 
   продуктів, записує надану/отриману інформацію у БД' */
@@ -39,7 +39,7 @@ router.patch('api/products/', () => {
 
 });
 
-router.get('api/products/', () => {
+router.get('/api/products/', () => {
   // #swagger.tags = ['Products']
   // #swagger.description = 'енд-поінт на пошук продуктів з БД по query-рядку'
   /* #swagger.responses[200] = {

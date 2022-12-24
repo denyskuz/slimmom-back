@@ -1,4 +1,4 @@
-router.post('api/auth/registration', () => {
+router.post('/api/auth/registration', () => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'Eнд-поінт реєстрації'
   /* #swagger.responses[201] = {
@@ -18,7 +18,7 @@ router.post('api/auth/registration', () => {
   */
 });
 
-router.post('api/auth/login', () => {
+router.post('/api/auth/login', () => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'Eнд-поінт аутентифікації'
   /* #swagger.responses[200] = {
@@ -38,7 +38,7 @@ router.post('api/auth/login', () => {
   */
 });
 
-router.get('api/auth/logout', () => {
+router.get('/api/auth/logout', () => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'Енд-поінт виходу з облікового запису'
   // #swagger.responses[204] = { description: 'Success response' }

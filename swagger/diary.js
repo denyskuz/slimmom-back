@@ -1,4 +1,4 @@
-router.post('api/diary/', () => {
+router.post('/api/diary/', () => {
   // #swagger.tags = ['Diary']
   // #swagger.description = 'Eнд-поінт на додавання з`їденого продукту у конкретний день'
   /* #swagger.responses[201] = {
@@ -18,7 +18,7 @@ router.post('api/diary/', () => {
   */
 });
 
-router.get('api/diary/:date', () => {
+router.get('/api/diary/:date', () => {
   // #swagger.tags = ['Diary']
   // #swagger.description = 'Eнд-поінт на отримання всієї інформації щодо конкретного дня'
   /* #swagger.responses[200] = {
@@ -32,7 +32,7 @@ router.get('api/diary/:date', () => {
   // #swagger.parameters['date'] = { example: '2022-21-12', }
 });
 
-router.delete('api/diary/:noteId', () => {
+router.delete('/api/diary/:noteId', () => {
   // #swagger.tags = ['Diary']
   // #swagger.description = 'Eнд-поінт для видалення з`їденого продукту в конкретний день'
   /* #swagger.responses[200] = {
