@@ -4,7 +4,7 @@ const productController = require('../controller/product.controller');
 
 const productRouter = express.Router();
 
-productRouter.get('/', tryCatchWrapper(productController.getPublicCalories));
+productRouter.post('/', tryCatchWrapper(productController.getPublicCalories));
 
 productRouter.patch('/', auth, tryCatchWrapper(productController.getCaloriesByUser));
 

@@ -3,11 +3,11 @@ const { userParamsSchema, productsQuerySchema } = require('../validation');
 
 async function getPublicCalories(req, res, next) {
   try {
-    await userParamsSchema.validateAsync(req.query);
+    await userParamsSchema.validateAsync(req.body);
     const products = await productsService.find({
       [`groupBloodNotAllowed.${req.query.bloodType}`]: true,
     });
-    const kCal = productCalc(req.query);
+    const kCal = productCalc(req.body);
 
     return res.json({
       kCal,

@@ -31,7 +31,6 @@ async function addDiaryData (req, res, next) {
 async function getDiaryByDate (req, res, next) {
   try {
     const date = req.params.date;
-    console.log('sdfsdfsdfsd', date)
     await noteDateSchema.validateAsync(date);
     const start = new Date(date);
     start.setHours(0, 0, 0, 0);
