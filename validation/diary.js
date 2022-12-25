@@ -12,7 +12,6 @@ const noteParamsSchema = Joi.object({
 
 const noteDateSchema = Joi.date()
   .iso()
-  .greater(new Date().toDateString())
   .required()
   .example('2022-12-21');
 

@@ -31,14 +31,11 @@ async function addDiaryData(req, res, next) {
 async function getDiaryByDate(req, res, next) {
   try {
     const date = req.params.date;
-    console.log('sdfsdfsdfsd', date);
     await noteDateSchema.validateAsync(date);
     const start = new Date(date);
     start.setHours(0, 0, 0, 0);
     const end = new Date(date);
     end.setHours(23, 59, 59, 999);
-    console.log('start', start);
-    console.log('end', end);
     const notes = await notesService
       .find({
         owner: req.user._id,
@@ -53,7 +50,6 @@ async function getDiaryByDate(req, res, next) {
       notes,
     });
   } catch (error) {
-    console.log('error =====>');
     next(BadRequest(error.message));
   }
   next();
