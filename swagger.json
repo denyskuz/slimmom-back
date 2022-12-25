@@ -1,0 +1,931 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "version": "1.0.0",
+    "title": "Slim Mom OpenAPI 1.0.0",
+    "description": "Swagger SlimMom openAPI"
+  },
+  "servers": [
+    {
+      "url": "https://slimmom-s41d.onrender.com/"
+    },
+    {
+      "url": "http://localhost:3000/"
+    }
+  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Diary",
+      "description": "Diary endpoints"
+    },
+    {
+      "name": "Products",
+      "description": "Products endpoints"
+    }
+  ],
+  "paths": {
+    "/api/auth/registration": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "403": {
+            "description": "Email doesn't exist / Password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User authentication",
+        "parameters": [],
+        "requestBody": {
+          "description": "Authentication's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "403": {
+            "description": "Email doesn't exist / Password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/current": {
+      "get": {
+        "tags": ["User"],
+        "summary": "User authentication",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "403": {
+            "description": "Email doesn't exist / Password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {}
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/diary/": {
+      "post": {
+        "tags": ["Diary"],
+        "summary": "Diary endpoint, adding information to your diary",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiaryRequest"
+              }
+            }
+        }
+        },
+        "responses": {
+          "201": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryCreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/diary/{date}": {
+      "get": {
+        "tags": ["Diary"],
+        "summary": "Diary endpoints, geting all information by the date",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2022-12-25"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryFindResponse"
+                }
+              }
+            }
+          },
+         "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/diary/{noteId}": {
+      "delete": {
+        "tags": ["Diary"],
+        "description": "Diary endpoints, deleting product from the selected day",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "noteId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiaryRemoveResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/products/": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Public and private route for gettting product by params",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      },
+      "get": {
+        "tags": [ "Products"],
+        "description": "Products endpoints for finding products in by name ",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+   "components": {
+    "schemas": {
+      "RegistrationRequest": {
+            "required": ["email", "password", "username"],
+            "type": "object",
+            "properties": {
+              "password": {
+                "type": "string",
+                "minLength": 6,
+                "description": "User's password",
+                "example": "qwerty123"
+              },
+              "email": {
+                "type": "string",
+                "description": "User's email",
+                "format": "email",
+                "example": "user@user.com"
+              },
+              "name": {
+                "type": "string",
+                "description": "User's name",
+                "example": "Nic"
+              }
+            }
+      },
+      "ProductRequest": {
+        "type": "object",
+        "properties": {
+          "height": {
+            "type": "number",
+            "format": "float",
+            "minimum": 10,
+            "maximum": 300,
+            "example": "150"
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200,
+            "example": "18"
+          },
+          "currentWeight": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 500,
+            "example": "60"
+          },
+          "desiredWeight": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 500,
+            "example": "50"
+          },
+          "bloodType": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 4,
+            "example": "1"
+          }
+        },
+        "required": [
+          "height",
+          "age",
+          "currentWeight",
+          "desiredWeight",
+          "bloodType"
+        ]
+      },
+      "DiaryRequest": {
+        "type": "object",
+        "properties": {
+          "weight": {
+            "type": "number",
+            "format": "float",
+            "minimum": 10,
+            "maximum": 500,
+            "example": "80"
+          },
+          "product": {
+            "type": "string",
+            "example": "639aa3fb5e433813b2d2a1d8"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-12-21"
+          }
+        },
+        "required": [
+          "weight",
+          "product",
+          "date"
+        ]
+      },
+      "LoginRequest": {
+        "required": ["email", "password"],
+        "type": "object",
+        "properties": {
+          "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "password": {
+              "type": "string",
+              "description": "User's password",
+              "minLength": 6,
+              "example": "qwerty123"
+            }
+        }
+      },
+      "RegistrationResponse": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "example": "success"
+            },
+            "data": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Registration successful"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "user@user.com"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Nic"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "name"
+                  ]
+                }
+              },
+              "required": [
+                "message",
+                "user"
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "data"
+          ]
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "accessToken": {
+                "type": "string",
+                "description": "Session's access token (needed for all requests)",
+                "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYTI2NDhkYmYwOWUwNzA3NTVkODliZSIsImVtYWlsIjoidXNlckBnbWFpbC5jb20iLCJpYXQiOjE2NzE1ODgxNDksImV4cCI6MTY3MTU5MTc0OX0.jJSyyA21txMSU4mw-TEPK1afpF2v9--jICFNDnuLwKM"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "format": "email",
+                    "example": "user@user.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "User's name",
+                    "example": "Nic"
+                  },
+                  "age": {
+                    "type": "number",
+                    "description": "User's age",
+                    "format": "float",
+                    "example": 18
+                  },
+                  "height": {
+                    "type": "number",
+                    "description": "User's height",
+                    "format": "float",
+                    "example": 150
+                  },
+                  "currentWeight": {
+                    "type": "number",
+                    "description": "User's current weight",
+                    "format": "float",
+                    "example": 60
+                  },
+                  "desiredWeight": {
+                    "type": "number",
+                    "description": "User's desired weight",
+                    "format": "float",
+                    "example": 50
+                  }
+                },
+                "required": [
+                  "email",
+                  "name"
+                ]
+              }
+            },
+            "required": [
+              "accessToken",
+              "user"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "data"
+        ]
+      },
+      "CurrentUserResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "User's email",
+                    "format": "email",
+                    "example": "user@user.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "User's name",
+                    "example": "Nic"
+                  },
+                  "age": {
+                    "type": "number",
+                    "description": "User's age",
+                    "format": "float",
+                    "example": 18
+                  },
+                  "height": {
+                    "type": "number",
+                    "description": "User's height",
+                    "format": "float",
+                    "example": 150
+                  },
+                  "currentWeight": {
+                    "type": "number",
+                    "description": "User's current weight",
+                    "format": "float",
+                    "example": 60
+                  },
+                  "desiredWeight": {
+                    "type": "number",
+                    "description": "User's desired weight",
+                    "format": "float",
+                    "example": 50
+                  }
+                },
+                "required": [
+                  "email",
+                  "name"
+                ]
+              }
+            },
+            "required": [
+              "accessToken",
+              "user"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "data"
+        ]
+      },
+      "DiaryCreateResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "new note created"
+          },
+          "note": {
+            "type": "object",
+            "properties": {
+              "owner": {
+                "type": "string",
+                "example": "63a2648dbf09e070755d89be"
+              },
+              "product": {
+                "type": "string",
+                "example": "5d51694802b2373622ff554d"
+              },
+              "weight": {
+                "type": "number",
+                "format": "float",
+                "example": 50
+              },
+              "date": {
+                "type": "string",
+                "example": "2022-12-21T00:00:00.000Z"
+              },
+              "_id": {
+                "type": "string",
+                "example": "63a363474bc5f3dc4fc951cb"
+              }
+            },
+            "required": [
+              "owner",
+              "product",
+              "weight",
+              "date",
+              "_id"
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "note"
+        ]
+      },
+      "DiaryFindResponse": {
+        "type": "object",
+        "properties": {
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "owner": {
+                  "type": "string",
+                  "example": "63a2648dbf09e070755d89be"
+                },
+                "product": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "object",
+                      "properties": {
+                        "ru": {
+                          "type": "string",
+                          "description": "Name of the product"
+                        },
+                        "ua": {
+                          "type": "string",
+                          "description": "Name of the product"
+                        }
+                      },
+                      "required": [
+                        "ru",
+                        "ua"
+                      ]
+                    },
+                    "categories": {
+                      "type": "array",
+                      "description": "Categories of the product"
+                    },
+                    "groupBloodNotAllowed": {
+                      "type": "array",
+                      "description": "group of blood"
+                    },
+                    "weight": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 100
+                    },
+                    "calories": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 623
+                    }
+                  },
+                  "required": [
+                    "calories",
+                    "weight",
+                    "groupBloodNotAllowed",
+                    "categories",
+                    "title"
+                  ]
+                },
+                "weight": {
+                  "type": "number",
+                  "format": "float",
+                  "example": 50
+                },
+                "date": {
+                  "type": "string",
+                  "example": "2022-12-21T00:00:00.000Z"
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "63a363474bc5f3dc4fc951cb"
+                }
+              },
+              "required": [
+                "owner",
+                "product",
+                "weight",
+                "date",
+                "_id"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "notes"
+        ],
+        "additionalProperties": false
+      },
+      "DiaryRemoveResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "note deleted"
+          },
+          "note": {
+            "type": "object",
+            "properties": {
+              "owner": {
+                "type": "string",
+                "example": "63a2648dbf09e070755d89be"
+              },
+              "product": {
+                "type": "string",
+                "example": "5d51694802b2373622ff554d"
+              },
+              "weight": {
+                "type": "number",
+                "format": "float",
+                "example": 50
+              },
+              "date": {
+                "type": "string",
+                "example": "2022-12-21T00:00:00.000Z"
+              },
+              "_id": {
+                "type": "string",
+                "example": "63a363474bc5f3dc4fc951cb"
+              }
+            },
+            "required": [
+              "owner",
+              "product",
+              "weight",
+              "date",
+              "_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "status",
+          "note"
+        ],
+        "additionalProperties": false
+      },
+      "ProductsResponse": {
+        "type": "object",
+        "properties": {
+          "kCal": {
+            "type": "number",
+            "format": "float",
+            "example": 1186.5
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "object",
+                  "properties": {
+                    "ru": {
+                      "type": "string",
+                      "example": "Меланж яичный"
+                    },
+                    "ua": {
+                      "type": "string",
+                      "example": "Меланж яєчний"
+                    }
+                  },
+                  "required": [
+                    "ru",
+                    "ua"
+                  ],
+                  "additionalProperties": false
+                },
+                "groupBloodNotAllowed": {
+                  "type": "array",
+                  "items": {
+                    "type": "boolean"
+                  },
+                  "nullable": true,
+                  "example": [
+                    null,
+                    true,
+                    false,
+                    false,
+                    false
+                  ]
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "5d51694802b2373622ff552c"
+                },
+                "categories": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": [
+                    "яйца"
+                  ]
+                },
+                "weight": {
+                  "type": "number",
+                  "format": "float",
+                  "example": 100
+                },
+                "calories": {
+                  "type": "number",
+                  "format": "float",
+                  "example": 157
+                },
+                "__v": {
+                  "type": "number",
+                  "format": "float",
+                  "example": 0
+                }
+              },
+              "required": [
+                "title",
+                "groupBloodNotAllowed",
+                "_id",
+                "categories",
+                "weight",
+                "calories",
+                "__v"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "kCal",
+          "products"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
