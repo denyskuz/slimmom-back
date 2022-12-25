@@ -8,13 +8,11 @@ const PORT = process.env.PORT || 3000;
 const uriDb = process.env.DB_HOST;
 
 mongoose.Promise = global.Promise;
-  
+
 const connection = mongoose.connect(uriDb);
 connection
   .then(() => {
-    console.log(
-      chalk.green('\n====== Database connection successful ======')
-    );
+    console.log(chalk.green('\n====== Database connection successful ======'));
     app.listen(PORT, function () {
       console.log(
         chalk.green(
@@ -30,8 +28,6 @@ connection
     });
   })
   .catch(err => {
-    console.log(
-      chalk.red(`Server not running. Error message: ${err.message}`)
-    );
+    console.log(chalk.red(`Server not running. Error message: ${err.message}`));
     process.exit(1);
-});
+  });

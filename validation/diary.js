@@ -10,10 +10,7 @@ const noteParamsSchema = Joi.object({
     .example('2022-12-21'),
 }).required();
 
-const noteDateSchema = Joi.date()
-  .iso()
-  .required()
-  .example('2022-12-21');
+const noteDateSchema = Joi.date().iso().required().example('2022-12-21');
 
 module.exports = {
   noteParamsSchema,
