@@ -5,9 +5,9 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server.js",
     "start:dev": "cross-env NODE_ENV=development nodemon ./server.js --ignore swagger.json",
-    "lint": "eslint **/*.js",
-    "lint:fix": "eslint --fix **/*.js",
-    "prettier": "prettier --config .prettierrc --write ./**/*.{js,jsx}",
+    "lint": "eslint '**/*.js'",
+    "lint:fix": "eslint --fix '**/*.js'",
+    "prettier": "prettier --config .prettierrc --write '**/*.js'",
     "test": "jest"
   },
   "dependencies": {

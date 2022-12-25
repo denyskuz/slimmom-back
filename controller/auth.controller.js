@@ -1,4 +1,4 @@
-const { Conflict, Unauthorized, NotFound, BadRequest } = require('http-errors');
+const { Conflict, Unauthorized } = require('http-errors');
 const jwt = require('jsonwebtoken');
 const { nanoid } = require('nanoid');
 const { loginSchema, registrationSchema } = require('../validation');
@@ -6,7 +6,7 @@ const { usersService } = require('../service');
 
 const secret = process.env.SECRET;
 
-async function registration (req, res, next) {
+async function registration(req, res, next) {
   const { name, email, password } = req.body;
   const accessToken = nanoid();
   try {
@@ -31,9 +31,9 @@ async function registration (req, res, next) {
     next(error);
   }
   return next();
-};
+}
 
-async function login (req, res, next) {
+async function login(req, res, next) {
   const { email, password } = req.body;
   try {
     await loginSchema.validateAsync(req.body);
@@ -69,20 +69,53 @@ async function login (req, res, next) {
     next(err);
   }
   next();
-};
+}
 
-async function logout (req, res, next) {
+async function logout(req, res, next) {
   try {
     const { _id } = req.user;
     await usersService.findByIdAndUpdate(_id, { accessToken: '' });
     return res.status(204).json();
-  } catch (err) { 
-    next(err)
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function current(req, res, next) {
+  try {
+    const { user } = req;
+    console.log('user', user);
+    const {
+      email,
+      name,
+      age,
+      height,
+      currentWeight,
+      bloodType,
+      desiredWeight,
+    } = user;
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user: {
+          email,
+          name,
+          age,
+          height,
+          currentWeight,
+          bloodType,
+          desiredWeight,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
   }
 }
 
 module.exports = {
-    registration,
-    login,
-    logout
+  registration,
+  login,
+  logout,
+  current,
 };

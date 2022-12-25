@@ -27,7 +27,6 @@ const userLoginSchema = Joi.object({
       height: Joi.number().example(150),
       currentWeight: Joi.number().example(60),
       desiredWeight: Joi.number().example(50),
-      currentWeight: Joi.number().example(1),
     }).required(),
   }).required(),
 }).required();
@@ -79,14 +78,11 @@ const badProductsFindSchema = Joi.object({
         .allow(null)
         .required()
         .example([null, true, false, false, false]),
-        _id: Joi.string().required().example('5d51694802b2373622ff552c'),
-        categories: Joi.array()
-        .items(Joi.string())
-        .required()
-        .example(['яйца']),
-        weight: Joi.number().required().example(100),
-        calories: Joi.number().required().example(157),
-        __v: Joi.number().required().example(0),
+      _id: Joi.string().required().example('5d51694802b2373622ff552c'),
+      categories: Joi.array().items(Joi.string()).required().example(['яйца']),
+      weight: Joi.number().required().example(100),
+      calories: Joi.number().required().example(157),
+      __v: Joi.number().required().example(0),
     })
     .required(),
 }).required();

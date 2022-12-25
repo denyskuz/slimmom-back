@@ -1,12 +1,14 @@
 const express = require('express');
-const { auth, tryCatchWrapper } = require('../middleware');
+const { auth, tryCatchWrapper, authPublic } = require('../middleware');
 const productController = require('../controller/product.controller');
 
 const productRouter = express.Router();
 
-productRouter.get('/', tryCatchWrapper(productController.getPublicCalories));
-
-productRouter.patch('/', auth, tryCatchWrapper(productController.getCaloriesByUser));
+productRouter.post(
+  '/',
+  authPublic,
+  tryCatchWrapper(productController.getCalories)
+);
 
 productRouter.get('/', auth, tryCatchWrapper(productController.getProducts));
 

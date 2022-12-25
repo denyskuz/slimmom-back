@@ -3,7 +3,7 @@ const { BadRequest } = require('http-errors');
 const { notesService } = require('../service');
 const { noteParamsSchema, noteDateSchema } = require('../validation');
 
-async function addDiaryData (req, res, next) {
+async function addDiaryData(req, res, next) {
   try {
     await noteParamsSchema.validateAsync(req.body);
     const { weight, product, date } = req.body;
@@ -26,12 +26,12 @@ async function addDiaryData (req, res, next) {
     next(BadRequest(error.message));
   }
   next();
-};
+}
 
-async function getDiaryByDate (req, res, next) {
+async function getDiaryByDate(req, res, next) {
   try {
     const date = req.params.date;
-    console.log('sdfsdfsdfsd', date)
+    console.log('sdfsdfsdfsd', date);
     await noteDateSchema.validateAsync(date);
     const start = new Date(date);
     start.setHours(0, 0, 0, 0);
@@ -53,13 +53,13 @@ async function getDiaryByDate (req, res, next) {
       notes,
     });
   } catch (error) {
-    console.log('error =====>')
+    console.log('error =====>');
     next(BadRequest(error.message));
   }
   next();
-};
+}
 
-async function removeDiary (req, res, next) {
+async function removeDiary(req, res, next) {
   try {
     const noteId = req.params.noteId;
     if (!isValidObjectId(noteId)) {
@@ -79,10 +79,10 @@ async function removeDiary (req, res, next) {
     next(BadRequest(error.message));
   }
   next();
-};
+}
 
 module.exports = {
-    addDiaryData,
-    getDiaryByDate,
-    removeDiary
+  addDiaryData,
+  getDiaryByDate,
+  removeDiary,
 };

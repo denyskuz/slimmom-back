@@ -7,5 +7,5 @@ module.exports = {
   auth,
   handleErrors,
   tryCatchWrapper,
-  authPublic
+  authPublic,
 };

@@ -36,7 +36,6 @@ router.patch('api/auth/products/', () => {
             schema: { $ref: '#/components/requestBodies/userParams' },
         }}}
   */
-
 });
 
 router.get('api/auth/products/', () => {
@@ -50,5 +49,4 @@ router.get('api/auth/products/', () => {
   }}} */
   // #swagger.responses[400] = { description: 'Bad request' }
   // #swagger.responses[401] = { description: 'Missing header with authorization token' }
-
 });
