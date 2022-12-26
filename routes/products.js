@@ -10,6 +10,11 @@ productRouter.post(
   tryCatchWrapper(productController.getCalories)
 );
 
+productRouter.post(
+  '/categories',
+  tryCatchWrapper(productController.getCategories)
+);
+
 productRouter.get('/', auth, tryCatchWrapper(productController.getProducts));
 
 module.exports = productRouter;
