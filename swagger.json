@@ -508,7 +508,7 @@
           },
           "product": {
             "type": "string",
-            "example": "639aa3fb5e433813b2d2a1d8"
+            "example": "5d51694802b2373622ff554d"
           },
           "date": {
             "type": "string",
