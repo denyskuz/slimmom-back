@@ -7,7 +7,7 @@ const handleErrors = app => {
     console.error(`err ====>: ${req.type}, ${err.message}, ${err.name}`);
 
     if (err.name === 'ValidationError') {
-      res.status(400).json({
+      return res.status(400).json({
         message: err.message,
       });
     }

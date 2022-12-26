@@ -47,9 +47,14 @@ const usersSchema = new Schema(
   }
 );
 
-usersSchema.methods.setPassword = function (password) {
-  this.password = bCrypt.hashSync(password, bCrypt.genSaltSync(6));
-};
+usersSchema.pre('save', async function save(next) {
+  try {
+    this.password = bCrypt.hashSync(this.password, bCrypt.genSaltSync(6));
+    return next();
+  } catch (err) {
+    return next(err);
+  }
+});
 
 usersSchema.methods.validPassword = function (password) {
   return bCrypt.compareSync(password, this.password);
