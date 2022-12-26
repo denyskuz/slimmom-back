@@ -1,5 +1,5 @@
 const express = require('express');
-const { auth, tryCatchWrapper, authPublic } = require('../middleware');
+const { tryCatchWrapper, authPublic } = require('../middleware');
 const productController = require('../controller/product.controller');
 
 const productRouter = express.Router();
@@ -15,6 +15,6 @@ productRouter.post(
   tryCatchWrapper(productController.getCategories)
 );
 
-productRouter.get('/', auth, tryCatchWrapper(productController.getProducts));
+productRouter.get('/', tryCatchWrapper(productController.getProducts));
 
 module.exports = productRouter;
