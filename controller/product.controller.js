@@ -10,10 +10,15 @@ async function getCalories(req, res, next) {
   await userParamsSchema.validateAsync(req.body);
   await badProductsQuerySchema.validateAsync(req.query);
   const { skip, limit } = pageParams(req.query);
-
+  const { category } = req.query;
+  const categoryQuery = {};
+  if (category) {
+    categoryQuery.categories = category;
+  }
   const products = await productsService
     .find({
       [`groupBloodNotAllowed.${req.body.bloodType}`]: true,
+      ...categoryQuery,
     })
     .skip(skip)
     .limit(limit);
