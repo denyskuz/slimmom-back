@@ -1,3 +1,4 @@
+const router={};
 router.post('/api/products/', () => {
   // #swagger.tags = ['Products']
   // #swagger.description = 'Публічний енд-поінт на отримання денної норми ккал та списку нерекомендованих продуктів'

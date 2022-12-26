@@ -1,3 +1,4 @@
+const router={};
 router.post('/api/auth/registration', () => {
   // #swagger.tags = ['Auth']
   // #swagger.description = 'Eнд-поінт реєстрації'

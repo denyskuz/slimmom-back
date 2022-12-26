@@ -1,3 +1,4 @@
+const router={};
 router.post('/api/diary/', () => {
   // #swagger.tags = ['Diary']
   // #swagger.description = 'Eнд-поінт на додавання з`їденого продукту у конкретний день'
