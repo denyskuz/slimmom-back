@@ -10,6 +10,7 @@ const productsQuerySchema = Joi.object({
 const badProductsQuerySchema = Joi.object({
   currentPage: Joi.number().example(1),
   pageSize: Joi.number().example(10),
+  category: Joi.string().example('боби'), 
 });
 
 module.exports = {
