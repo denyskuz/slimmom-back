@@ -15,6 +15,6 @@ productRouter.post(
   tryCatchWrapper(productController.getCategories)
 );
 
-productRouter.get('/', auth, tryCatchWrapper(productController.getProducts));
+productRouter.get('/', tryCatchWrapper(productController.getProducts));
 
 module.exports = productRouter;
