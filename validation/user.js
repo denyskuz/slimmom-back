@@ -19,13 +19,13 @@ const userParamsSchema = Joi.object({
 }).required();
 
 const loginSchema = Joi.object({
-  password: Joi.string().min(6).required().example('Dikfj434io'),
-  email: Joi.string().required().example('nic@gmail.com'),
+  password: Joi.string().min(6).required().example('qwerty123'),
+  email: Joi.string().required().example('user@user.com'),
 }).required();
 
 const registrationSchema = Joi.object({
-  password: Joi.string().min(6).required().example('Dikfj434io'),
-  email: Joi.string().required().example('nic@gmail.com'),
+  password: Joi.string().min(6).required().example('qwerty123'),
+  email: Joi.string().required().example('user@user.com'),
   name: Joi.string().required().example('Nic'),
   height: Joi.number().min(10).max(300).example('150'),
   age: Joi.number().integer().min(1).max(200).example('18'),

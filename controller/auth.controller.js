@@ -50,8 +50,8 @@ async function login(req, res, next) {
         age,
         height,
         currentWeight,
-        bloodType,
         desiredWeight,
+        bloodType,
       },
     },
   });
