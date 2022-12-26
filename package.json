@@ -7,7 +7,7 @@
     "start:dev": "cross-env NODE_ENV=development nodemon ./server.js",
     "lint": "eslint '**/*.js'",
     "lint:fix": "eslint --fix '**/*.js'",
-    "prettier": "prettier --config .prettierrc --write '**/*.js'",
+    "prettier": "prettier --config .prettierrc --write **/*.js",
     "test": "jest"
   },
   "dependencies": {
