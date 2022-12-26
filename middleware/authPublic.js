@@ -1,8 +1,6 @@
 const passport = require('passport');
-const { Unauthorized } = require('http-errors');
-
 const authPublic = (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user) => {
+  passport.authenticate('jwt', { session: false }, (_, user) => {
     req.user = user;
     next();
   })(req, res, next);

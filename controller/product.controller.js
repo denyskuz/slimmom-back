@@ -1,70 +1,75 @@
-const { usersService, productsService, productCalc } = require('../service');
-const { userParamsSchema, productsQuerySchema } = require('../validation');
+const { usersService, productsService } = require('../service');
+const {
+  userParamsSchema,
+  productsQuerySchema,
+  badProductsQuerySchema,
+} = require('../validation');
+const { productCalc, pageParams } = require('../helpers');
 
-async function getPublicCalories(req, res, next) {
-  try {
-    await userParamsSchema.validateAsync(req.body);
-    const products = await productsService.find({
-      [`groupBloodNotAllowed.${req.query.bloodType}`]: true,
-    });
-    const kCal = productCalc(req.body);
+async function getCalories(req, res, next) {
+  await userParamsSchema.validateAsync(req.body);
+  await badProductsQuerySchema.validateAsync(req.query);
+  const { skip, limit } = pageParams(req.query);
 
-    return res.json({
-      kCal,
-      products,
-    });
-  } catch (error) { 
-    next(error);
-  }
-
-}
-
-async function getCaloriesByUser(req, res, next) {
-   try {
-      await userParamsSchema.validateAsync(req.body);
-      const products = await productsService.find({
-        [`groupBloodNotAllowed.${req.body.bloodType}`]: true,
-      });
-      const kCal = productCalc(req.body);
-      const user = await usersService
+  const products = await productsService
+    .find({
+      [`groupBloodNotAllowed.${req.body.bloodType}`]: true,
+    })
+    .skip(skip)
+    .limit(limit);
+  const kCal = productCalc(req.body);
+  const user =
+    req.user &&
+    (await usersService
       .findByIdAndUpdate(req.user._id, req.body, {
         new: true,
         runValidators: true,
       })
-      .lean();
-      return res.json({
-        message: user && `${user.name} parameters updated`,
-        kCal,
-        products,
-      });
-   } catch (error) { 
-     console.log('v', error)
-    next(error);
-  }
- }
+      .lean());
+  return res.json({
+    message: user ? `private ${user.name} parameters updated` : 'public',
+    kCal,
+    products,
+  });
+}
+
+async function getCategories(req, res, next) {
+  await userParamsSchema.validateAsync(req.body);
+
+  const categories = await productsService
+    .aggregate()
+    .match({ [`groupBloodNotAllowed.${req.body.bloodType}`]: true })
+    .project({ categories: 1 })
+    .unwind('$categories')
+    .group({ _id: '$categories' })
+    .group({ _id: 'categories', titles: { $push: '$_id' } });
+
+  return res.json({
+    titles: categories[0].titles,
+  });
+}
 
 async function getProducts(req, res, next) {
-  try { 
-    await productsQuerySchema.validateAsync(req.query);
-    const { title, category } = req.query;
-    const products = await productsService.find({
+  await productsQuerySchema.validateAsync(req.query);
+  const { title, category } = req.query;
+  const { skip, limit } = pageParams(req.query);
+  const products = await productsService
+    .find({
       $or: [
         { 'title.ru': { $regex: '^' + title, $options: 'i' } },
         { 'title.ua': { $regex: '^' + title, $options: 'i' } },
         { categories: { $regex: '^' + category, $options: 'i' } },
       ],
-    });
-    return res.json({
-      products,
-    });
-  } catch (error) { 
-    next(error);
-  }
-
+    })
+    .skip(skip)
+    .limit(limit);
+  return res.json({
+    products,
+  });
 }
 
 module.exports = {
-    getPublicCalories,
-    getCaloriesByUser,
-    getProducts
+  getCalories,
+  getCategories,
+  getProducts,
 };

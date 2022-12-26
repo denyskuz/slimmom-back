@@ -13,7 +13,6 @@
 
 
 # misc
-swagger.json
 .DS_Store
 .env
 .env.local

@@ -8,6 +8,10 @@ diaryAuth.post('/', auth, tryCatchWrapper(diaryController.addDiaryData));
 
 diaryAuth.get('/:date', auth, tryCatchWrapper(diaryController.getDiaryByDate));
 
-diaryAuth.delete('/:noteId', auth, tryCatchWrapper(diaryController.removeDiary));
+diaryAuth.delete(
+  '/:noteId',
+  auth,
+  tryCatchWrapper(diaryController.removeDiary)
+);
 
 module.exports = diaryAuth;
