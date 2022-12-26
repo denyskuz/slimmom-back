@@ -5,7 +5,6 @@ const noteParamsSchema = Joi.object({
   product: Joi.string().required().example('639aa3fb5e433813b2d2a1d8'),
   date: Joi.date()
     .iso()
-    .greater(new Date().toDateString())
     .required()
     .example('2022-12-21'),
 }).required();
