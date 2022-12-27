@@ -4,7 +4,7 @@ const {
   productsQuerySchema,
   badProductsQuerySchema,
 } = require('../validation');
-const { productCalc, pageParams } = require('../helpers');
+const { productCalc, pageParams, pageInfo } = require('../helpers');
 
 async function getCalories(req, res, next) {
   await userParamsSchema.validateAsync(req.body);
@@ -31,9 +31,11 @@ async function getCalories(req, res, next) {
         runValidators: true,
       })
       .lean());
+  const page = pageInfo(req.query, await productsService.countDocuments({}));
   return res.json({
     message: user ? `private ${user.name} parameters updated` : 'public',
     kCal,
+    page,
     products,
   });
 }
@@ -68,7 +70,9 @@ async function getProducts(req, res, next) {
     })
     .skip(skip)
     .limit(limit);
+  const page = pageInfo(req.query, await productsService.countDocuments({}));
   return res.json({
+    page,
     products,
   });
 }
