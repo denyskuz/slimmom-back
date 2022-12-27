@@ -1,12 +1,12 @@
 const { isValidObjectId } = require('mongoose');
 const { BadRequest } = require('http-errors');
-const { notesService } = require('../service');
+const { productsService, notesService } = require('../service');
 const { noteParamsSchema, noteDateSchema } = require('../validation');
 
 async function addDiaryData(req, res, next) {
   await noteParamsSchema.validateAsync(req.body);
   const { weight, product, date } = req.body;
-  if (!isValidObjectId(product)) {
+  if (!isValidObjectId(product) || !(await productsService.findById(product))) {
     return next(BadRequest('product is not correct'));
   }
   const note = await notesService.create({
