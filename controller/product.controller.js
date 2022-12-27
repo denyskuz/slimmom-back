@@ -11,17 +11,13 @@ async function getCalories(req, res, next) {
   await badProductsQuerySchema.validateAsync(req.query);
   const { skip, limit } = pageParams(req.query);
   const { category } = req.query;
-  const categoryQuery = {};
+  const query = {
+    [`groupBloodNotAllowed.${req.body.bloodType}`]: true,
+  };
   if (category) {
-    categoryQuery.categories = category;
+    query.categories = category;
   }
-  const products = await productsService
-    .find({
-      [`groupBloodNotAllowed.${req.body.bloodType}`]: true,
-      ...categoryQuery,
-    })
-    .skip(skip)
-    .limit(limit);
+  const products = await productsService.find(query).skip(skip).limit(limit);
   const kCal = productCalc(req.body);
   const user =
     req.user &&
@@ -31,7 +27,7 @@ async function getCalories(req, res, next) {
         runValidators: true,
       })
       .lean());
-  const page = pageInfo(req.query, await productsService.countDocuments({}));
+  const page = pageInfo(req.query, await productsService.countDocuments(query));
   return res.json({
     message: user ? `private ${user.name} parameters updated` : 'public',
     kCal,
@@ -60,17 +56,15 @@ async function getProducts(req, res, next) {
   await productsQuerySchema.validateAsync(req.query);
   const { title, category } = req.query;
   const { skip, limit } = pageParams(req.query);
-  const products = await productsService
-    .find({
-      $or: [
-        { 'title.ru': { $regex: '^' + title, $options: 'i' } },
-        { 'title.ua': { $regex: '^' + title, $options: 'i' } },
-        { categories: { $regex: '^' + category, $options: 'i' } },
-      ],
-    })
-    .skip(skip)
-    .limit(limit);
-  const page = pageInfo(req.query, await productsService.countDocuments({}));
+  const query = {
+    $or: [
+      { 'title.ru': { $regex: '^' + title, $options: 'i' } },
+      { 'title.ua': { $regex: '^' + title, $options: 'i' } },
+      { categories: { $regex: '^' + category, $options: 'i' } },
+    ],
+  };
+  const products = await productsService.find(query).skip(skip).limit(limit);
+  const page = pageInfo(req.query, await productsService.countDocuments(query));
   return res.json({
     page,
     products,
