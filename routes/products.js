@@ -6,12 +6,13 @@ const productRouter = express.Router();
 
 productRouter.post(
   '/',
-  authPublic,
+  tryCatchWrapper(authPublic),
   tryCatchWrapper(productController.getCalories)
 );
 
 productRouter.post(
   '/categories',
+  tryCatchWrapper(authPublic),
   tryCatchWrapper(productController.getCategories)
 );
 
