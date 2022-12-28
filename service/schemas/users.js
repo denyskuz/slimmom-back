@@ -19,7 +19,6 @@ const usersSchema = new Schema(
     accessToken: {
       type: String,
       required: [true, 'Access token is required'],
-      unique: true,
     },
     height: {
       type: Number,
