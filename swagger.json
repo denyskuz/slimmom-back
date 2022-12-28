@@ -889,8 +889,79 @@
                   "example": "63a2648dbf09e070755d89be"
                 },
                 "product": {
-                  "type": "string",
-                  "example": "5d51694802b2373622ff554d"
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "object",
+                      "properties": {
+                        "ru": {
+                          "type": "string",
+                          "example": "Меланж яичный"
+                        },
+                        "ua": {
+                          "type": "string",
+                          "example": "Меланж яєчний"
+                        }
+                      },
+                      "required": [
+                        "ru",
+                        "ua"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "groupBloodNotAllowed": {
+                      "type": "array",
+                      "items": {
+                        "type": "boolean"
+                      },
+                      "nullable": true,
+                      "example": [
+                        null,
+                        true,
+                        false,
+                        false,
+                        false
+                      ]
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "5d51694802b2373622ff552c"
+                    },
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "яйца"
+                      ]
+                    },
+                    "weight": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 100
+                    },
+                    "calories": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 157
+                    },
+                    "__v": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 0
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "groupBloodNotAllowed",
+                    "_id",
+                    "categories",
+                    "weight",
+                    "calories",
+                    "__v"
+                  ],
+                  "additionalProperties": false
                 },
                 "weight": {
                   "type": "number",
@@ -2526,11 +2597,217 @@
                             "properties": {
                               "type": {
                                 "type": "string",
-                                "example": "string"
+                                "example": "object"
                               },
-                              "example": {
-                                "type": "string",
-                                "example": "5d51694802b2373622ff554d"
+                              "properties": {
+                                "type": "object",
+                                "properties": {
+                                  "title": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "example": "object"
+                                      },
+                                      "properties": {
+                                        "type": "object",
+                                        "properties": {
+                                          "ru": {
+                                            "type": "object",
+                                            "properties": {
+                                              "type": {
+                                                "type": "string",
+                                                "example": "string"
+                                              },
+                                              "example": {
+                                                "type": "string",
+                                                "example": "Меланж яичный"
+                                              }
+                                            }
+                                          },
+                                          "ua": {
+                                            "type": "object",
+                                            "properties": {
+                                              "type": {
+                                                "type": "string",
+                                                "example": "string"
+                                              },
+                                              "example": {
+                                                "type": "string",
+                                                "example": "Меланж яєчний"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "required": {
+                                        "type": "array",
+                                        "example": [
+                                          "ru",
+                                          "ua"
+                                        ],
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "additionalProperties": {
+                                        "type": "boolean",
+                                        "example": false
+                                      }
+                                    }
+                                  },
+                                  "groupBloodNotAllowed": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "example": "array"
+                                      },
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "type": {
+                                            "type": "string",
+                                            "example": "boolean"
+                                          }
+                                        }
+                                      },
+                                      "nullable": {
+                                        "type": "boolean",
+                                        "example": true
+                                      },
+                                      "example": {
+                                        "type": "array",
+                                        "items": {
+                                          "properties": {
+                                            "1": {
+                                              "type": "boolean"
+                                            },
+                                            "2": {
+                                              "type": "boolean"
+                                            },
+                                            "3": {
+                                              "type": "boolean"
+                                            },
+                                            "4": {
+                                              "type": "boolean"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "_id": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "example": "string"
+                                      },
+                                      "example": {
+                                        "type": "string",
+                                        "example": "5d51694802b2373622ff552c"
+                                      }
+                                    }
+                                  },
+                                  "categories": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "example": "array"
+                                      },
+                                      "items": {
+                                        "type": "object",
+                                        "properties": {
+                                          "type": {
+                                            "type": "string",
+                                            "example": "string"
+                                          }
+                                        }
+                                      },
+                                      "example": {
+                                        "type": "array",
+                                        "example": [
+                                          "яйца"
+                                        ],
+                                        "items": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "weight": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "example": "number"
+                                      },
+                                      "format": {
+                                        "type": "string",
+                                        "example": "float"
+                                      },
+                                      "example": {
+                                        "type": "number",
+                                        "example": 100
+                                      }
+                                    }
+                                  },
+                                  "calories": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "example": "number"
+                                      },
+                                      "format": {
+                                        "type": "string",
+                                        "example": "float"
+                                      },
+                                      "example": {
+                                        "type": "number",
+                                        "example": 157
+                                      }
+                                    }
+                                  },
+                                  "__v": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string",
+                                        "example": "number"
+                                      },
+                                      "format": {
+                                        "type": "string",
+                                        "example": "float"
+                                      },
+                                      "example": {
+                                        "type": "number",
+                                        "example": 0
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "required": {
+                                "type": "array",
+                                "example": [
+                                  "title",
+                                  "groupBloodNotAllowed",
+                                  "_id",
+                                  "categories",
+                                  "weight",
+                                  "calories",
+                                  "__v"
+                                ],
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "additionalProperties": {
+                                "type": "boolean",
+                                "example": false
                               }
                             }
                           },
