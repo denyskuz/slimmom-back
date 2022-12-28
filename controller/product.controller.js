@@ -3,7 +3,12 @@ const {
   productsQuerySchema,
   badProductsQuerySchema,
 } = require('../validation');
-const { productCalc, pageParams, pageInfo } = require('../helpers');
+const {
+  productCalc,
+  pageParams,
+  pageInfo,
+  searchRegex,
+} = require('../helpers');
 
 async function getCalories(req, res, next) {
   await badProductsQuerySchema.validateAsync(req.query);
@@ -47,11 +52,13 @@ async function getProducts(req, res, next) {
   await productsQuerySchema.validateAsync(req.query);
   const { title, category } = req.query;
   const { skip, limit } = pageParams(req.query);
+  const titleRegex = searchRegex(title);
+  const categoryRegex = searchRegex(category);
   const query = {
     $or: [
-      { 'title.ru': { $regex: '^' + title, $options: 'i' } },
-      { 'title.ua': { $regex: '^' + title, $options: 'i' } },
-      { categories: { $regex: '^' + category, $options: 'i' } },
+      { 'title.ru': titleRegex },
+      { 'title.ua': titleRegex },
+      { categories: categoryRegex },
     ],
   };
   const products = await productsService.find(query).skip(skip).limit(limit);
