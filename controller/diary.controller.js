@@ -6,7 +6,11 @@ const { noteParamsSchema, noteDateSchema } = require('../validation');
 async function addDiaryData(req, res, next) {
   await noteParamsSchema.validateAsync(req.body);
   const { weight, product, date } = req.body;
-  if (!isValidObjectId(product) || !(await productsService.findById(product))) {
+  if (!isValidObjectId(product)) {
+    return next(BadRequest('product id is not correct'));
+  }
+  const productItem = await productsService.findById(product);
+  if (!productItem) {
     return next(BadRequest('product is not correct'));
   }
   const note = await notesService.create({
@@ -15,6 +19,7 @@ async function addDiaryData(req, res, next) {
     product,
     date,
   });
+  note.product = productItem;
   if (note) {
     return res.status(201).json({
       message: 'new note created',
