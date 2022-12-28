@@ -477,8 +477,8 @@
           "weight": {
             "type": "number",
             "format": "float",
-            "minimum": 10,
-            "maximum": 500,
+            "minimum": 1,
+            "maximum": 10000,
             "example": "80"
           },
           "product": {
@@ -1046,7 +1046,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "example": "public"
+            "example": "Parameters calculated"
           },
           "titles": {
             "type": "array",
@@ -1064,10 +1064,6 @@
       "badProductsFind": {
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string",
-            "example": "public"
-          },
           "kCal": {
             "type": "number",
             "format": "float",
@@ -1179,7 +1175,6 @@
           }
         },
         "required": [
-          "message",
           "kCal",
           "page",
           "products"
@@ -1351,11 +1346,11 @@
                   },
                   "minimum": {
                     "type": "number",
-                    "example": 10
+                    "example": 1
                   },
                   "maximum": {
                     "type": "number",
-                    "example": 500
+                    "example": 10000
                   },
                   "example": {
                     "type": "string",
@@ -3064,7 +3059,7 @@
                   },
                   "example": {
                     "type": "string",
-                    "example": "public"
+                    "example": "Parameters calculated"
                   }
                 }
               },
@@ -3114,19 +3109,6 @@
           "properties": {
             "type": "object",
             "properties": {
-              "message": {
-                "type": "object",
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "example": "string"
-                  },
-                  "example": {
-                    "type": "string",
-                    "example": "public"
-                  }
-                }
-              },
               "kCal": {
                 "type": "object",
                 "properties": {
@@ -3457,7 +3439,6 @@
           "required": {
             "type": "array",
             "example": [
-              "message",
               "kCal",
               "page",
               "products"

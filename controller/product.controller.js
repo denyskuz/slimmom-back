@@ -22,10 +22,8 @@ async function getCalories(req, res, next) {
   }
   const products = await productsService.find(query).skip(skip).limit(limit);
   const kCal = productCalc(req.body);
-  const user =req.user;
   const page = pageInfo(req.query, await productsService.countDocuments(query));
   return res.json({
-    message: user ? `private ${user.name} parameters updated` : 'public',
     kCal,
     page,
     products,
@@ -43,7 +41,7 @@ async function getCategories(req, res, next) {
     .group({ _id: 'categories', titles: { $push: '$_id' } });
 
   return res.json({
-    message: user ? `private ${user.name} parameters updated` : 'public',
+    message: user ? `${user.name} parameters calculated` : 'Parameters calculated',
     titles: categories[0].titles,
   });
 }
