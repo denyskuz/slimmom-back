@@ -1,13 +1,11 @@
-const { usersService, productsService } = require('../service');
+const { productsService } = require('../service');
 const {
-  userParamsSchema,
   productsQuerySchema,
   badProductsQuerySchema,
 } = require('../validation');
 const { productCalc, pageParams, pageInfo } = require('../helpers');
 
 async function getCalories(req, res, next) {
-  await userParamsSchema.validateAsync(req.body);
   await badProductsQuerySchema.validateAsync(req.query);
   const { skip, limit } = pageParams(req.query);
   const { category } = req.query;
@@ -19,14 +17,7 @@ async function getCalories(req, res, next) {
   }
   const products = await productsService.find(query).skip(skip).limit(limit);
   const kCal = productCalc(req.body);
-  const user =
-    req.user &&
-    (await usersService
-      .findByIdAndUpdate(req.user._id, req.body, {
-        new: true,
-        runValidators: true,
-      })
-      .lean());
+  const user =req.user;
   const page = pageInfo(req.query, await productsService.countDocuments(query));
   return res.json({
     message: user ? `private ${user.name} parameters updated` : 'public',
@@ -37,8 +28,7 @@ async function getCalories(req, res, next) {
 }
 
 async function getCategories(req, res, next) {
-  await userParamsSchema.validateAsync(req.body);
-
+  const user =req.user;
   const categories = await productsService
     .aggregate()
     .match({ [`groupBloodNotAllowed.${req.body.bloodType}`]: true })
@@ -48,6 +38,7 @@ async function getCategories(req, res, next) {
     .group({ _id: 'categories', titles: { $push: '$_id' } });
 
   return res.json({
+    message: user ? `private ${user.name} parameters updated` : 'public',
     titles: categories[0].titles,
   });
 }
