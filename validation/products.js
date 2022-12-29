@@ -10,10 +10,16 @@ const productsQuerySchema = Joi.object({
 const badProductsQuerySchema = Joi.object({
   currentPage: Joi.number().example(1),
   pageSize: Joi.number().example(10),
-  category: Joi.string().example('боби'), 
+  category: Joi.string().example('боби'),
+});
+
+const categoriesQuerySchema = Joi.object({
+  currentPage: Joi.number().example(1),
+  pageSize: Joi.number().example(10),
 });
 
 module.exports = {
   productsQuerySchema,
   badProductsQuerySchema,
+  categoriesQuerySchema,
 };

@@ -368,7 +368,24 @@
         ],
         "summary": "Products endpoint for finding bad product categories by user params",
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "currentPage",
+            "example": "1",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageSize",
+            "example": "2",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success response",
@@ -1048,6 +1065,32 @@
             "type": "string",
             "example": "Parameters calculated"
           },
+          "page": {
+            "type": "object",
+            "properties": {
+              "current": {
+                "type": "number",
+                "format": "float",
+                "example": 1
+              },
+              "size": {
+                "type": "number",
+                "format": "float",
+                "example": 20
+              },
+              "total": {
+                "type": "number",
+                "format": "float",
+                "example": 15
+              }
+            },
+            "required": [
+              "current",
+              "size",
+              "total"
+            ],
+            "additionalProperties": false
+          },
           "titles": {
             "type": "array",
             "items": {
@@ -1057,6 +1100,7 @@
         },
         "required": [
           "message",
+          "page",
           "titles"
         ],
         "additionalProperties": false
@@ -3063,6 +3107,86 @@
                   }
                 }
               },
+              "page": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "example": "object"
+                  },
+                  "properties": {
+                    "type": "object",
+                    "properties": {
+                      "current": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "number"
+                          },
+                          "format": {
+                            "type": "string",
+                            "example": "float"
+                          },
+                          "example": {
+                            "type": "number",
+                            "example": 1
+                          }
+                        }
+                      },
+                      "size": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "number"
+                          },
+                          "format": {
+                            "type": "string",
+                            "example": "float"
+                          },
+                          "example": {
+                            "type": "number",
+                            "example": 20
+                          }
+                        }
+                      },
+                      "total": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "number"
+                          },
+                          "format": {
+                            "type": "string",
+                            "example": "float"
+                          },
+                          "example": {
+                            "type": "number",
+                            "example": 15
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": {
+                    "type": "array",
+                    "example": [
+                      "current",
+                      "size",
+                      "total"
+                    ],
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              },
               "titles": {
                 "type": "object",
                 "properties": {
@@ -3087,6 +3211,7 @@
             "type": "array",
             "example": [
               "message",
+              "page",
               "titles"
             ],
             "items": {
