@@ -36,28 +36,31 @@ async function getCategories(req, res, next) {
   await categoriesQuerySchema.validateAsync(req.query);
   const { skip, limit } = pageParams(req.query);
 
-  const categories = await productsService
+  const result = await productsService
     .aggregate()
     .match({ [`groupBloodNotAllowed.${req.body.bloodType}`]: true })
     .project({ categories: 1 })
     .unwind('$categories')
     .group({ _id: '$categories' })
-    .sort({ _id: 1 })
-    .skip(skip)
-    .limit(limit)
-    .group({ _id: 'categories', titles: { $push: '$_id' } });
+    .facet({
+      categories: [
+        { $sort: { _id: 1 } },
+        { $skip: skip },
+        { $limit: limit },
+        {
+          $group: { _id: 'categories', titles: { $push: '$_id' } },
+        },
+      ],
+      size: [
+        {
+          $group: { _id: 'null', count: { $sum: 1 } },
+        },
+      ],
+    });
 
-  const titles = categories[0] ? categories[0].titles : [];
+  const titles = result[0].categories[0] ? result[0].categories[0].titles : [];
 
-  const size = await productsService
-    .aggregate()
-    .match({ [`groupBloodNotAllowed.${req.body.bloodType}`]: true })
-    .project({ categories: 1 })
-    .unwind('$categories')
-    .group({ _id: '$categories' })
-    .group({ _id: 'null', count: { $sum: 1 } });
-
-  const count = size[0] ? size[0].count : [];
+  const count = result[0].size[0] ? result[0].size[0].count : [];
   const page = pageInfo(req.query, count);
 
   return res.json({
