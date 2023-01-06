@@ -4,8 +4,6 @@ const { nanoid } = require('nanoid');
 const { loginSchema, registrationSchema } = require('../validation');
 const { usersService } = require('../service');
 
-const secret = process.env.SECRET;
-
 async function registration(req, res, next) {
   const accessToken = nanoid();
   await registrationSchema.validateAsync(req.body);
@@ -36,7 +34,7 @@ async function login(req, res, next) {
     email: user.email,
   };
 
-  const accessToken = jwt.sign(payload, secret, { expiresIn: '1h' });
+  const accessToken = jwt.sign(payload, accessSecret, { expiresIn: '1h' });
   await usersService.findByIdAndUpdate(user._id, { accessToken });
   const { name, age, height, currentWeight, bloodType, desiredWeight } = user;
 
