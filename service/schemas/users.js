@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose');
-const jwt = require('jsonwebtoken');
+const createToken = require('../../helpers');
 const bCrypt = require('bcryptjs');
-const sessionServise = require('./session');
 
 const usersSchema = new Schema(
   {
@@ -57,39 +56,19 @@ usersSchema.pre('save', async function save(next) {
 
 usersSchema.methods = {
   validPassword: async function (password) {
-    return bCrypt.compareSync(password, this.password);
-  },
-  createAccessToken: async function () {
     try {
-      const { _id, name } = this;
-      const session = await sessionServise.create({ owner: _id });
-      const accessSecret = process.env.ACCESS_TOKEN_SECRET;
-      const accessToken = jwt.sign(
-        { user: { _id: session._id, name } },
-        accessSecret,
-        {
-          expiresIn: '10m',
-        }
-      );
-      return accessToken;
+      return bCrypt.compareSync(password, this.password);
     } catch (error) {
       console.error(error);
     }
   },
-  createRefreshToken: async function () {
-    try {
-      const { _id, name } = this;
-      const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
-      const refreshToken = jwt.sign({ user: { _id, name } }, refreshSecret, {
-        expiresIn: '1d',
-      });
-      this.accessToken = refreshToken;
-      this.markModified('accessToken');
-      await this.save();
-      return refreshToken;
-    } catch (error) {
-      console.error(error);
-    }
+  createAccessToken: function (sessionId) {
+    const accessSecret = process.env.ACCESS_TOKEN_SECRET;
+    return createToken(sessionId, '10m', accessSecret);
+  },
+  createRefreshToken: function (sessionId) {
+    const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
+    return createToken(sessionId, '1d', refreshSecret);
   },
 };
 

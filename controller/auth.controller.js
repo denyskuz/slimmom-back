@@ -1,13 +1,11 @@
 const { Unauthorized } = require('http-errors');
-const jwt = require('jsonwebtoken');
-const { nanoid } = require('nanoid');
 const { loginSchema, registrationSchema } = require('../validation');
-const { usersService } = require('../service');
+const { usersService, sessionServise } = require('../service');
+const refresh = require('../middleware');
 
 async function registration(req, res, next) {
-  const accessToken = nanoid();
   await registrationSchema.validateAsync(req.body);
-  const newUser = await usersService.create({ accessToken, ...req.body });
+  const newUser = await usersService.create({ ...req.body });
 
   return res.status(201).json({
     status: 'success',
@@ -29,19 +27,17 @@ async function login(req, res, next) {
   if (!user || !user.validPassword(password)) {
     throw new Unauthorized('Incorrect login or password');
   }
-  const payload = {
-    id: user.id,
-    email: user.email,
-  };
+  const session = await sessionServise.create({ owner: user._id });
+  const refreshToken = usersService.createRefreshToken(session._id);
+  const accessToken = usersService.createAccessToken(session._id);
 
-  const accessToken = jwt.sign(payload, accessSecret, { expiresIn: '1h' });
-  await usersService.findByIdAndUpdate(user._id, { accessToken });
   const { name, age, height, currentWeight, bloodType, desiredWeight } = user;
 
   return res.json({
     status: 'success',
     data: {
       accessToken,
+      refreshToken,
       user: {
         email,
         name,
@@ -56,19 +52,23 @@ async function login(req, res, next) {
 }
 
 async function logout(req, res, next) {
-  const { _id } = req.user;
-  await usersService.findByIdAndUpdate(_id, { accessToken: '' });
+  const { _id } = req.session;
+  await sessionServise.findByIdAndDelete(_id);
   return res.status(204).json();
 }
 
+async function refresh(req, res, next) {
+  const accessToken = usersService.createAccessToken(session._id);
+}
+
 async function current(req, res, next) {
-  const { user } = req;
-  console.log('user', user);
+  const { session } = req;
   const { email, name, age, height, currentWeight, bloodType, desiredWeight } =
-    user;
+  session.owner;
   return res.status(200).json({
     status: 'success',
     data: {
+      accessToken,
       user: {
         email,
         name,

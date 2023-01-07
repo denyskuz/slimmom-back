@@ -14,7 +14,7 @@ async function addDiaryData(req, res, next) {
     return next(BadRequest('product is not correct'));
   }
   const note = await notesService.create({
-    owner: req.user._id,
+    owner: req.session.owner._id,
     weight,
     product,
     date,
@@ -38,7 +38,7 @@ async function getDiaryByDate(req, res, next) {
   end.setHours(23, 59, 59, 999);
   const notes = await notesService
     .find({
-      owner: req.user._id,
+      owner: req.session.owner._id,
       date: {
         $gte: start,
         $lte: end,
@@ -58,7 +58,7 @@ async function removeDiary(req, res, next) {
     return next(BadRequest);
   }
   const note = await notesService.findOneAndDelete({
-    owner: req.user._id,
+    owner: req.session.owner._id,
     _id: noteId,
   });
   if (note) {
