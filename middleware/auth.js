@@ -2,7 +2,7 @@ const passport = require('passport');
 const { Unauthorized } = require('http-errors');
 
 const auth = (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, session) => {
+  passport.authenticate("cookie", { session: false }, (err, session) => {
     if (!session || err) {
       return next(Unauthorized());
     }

@@ -13,6 +13,6 @@ const sessionShema = new Schema(
   }
 );
 
-const sessionServise = model('session', sessionShema);
+const sessionServise = model('sessions', sessionShema);
 
 module.exports = sessionServise;

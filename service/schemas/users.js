@@ -1,5 +1,9 @@
 const { Schema, model } = require('mongoose');
-const createToken = require('../../helpers');
+const {
+  createToken,
+  expiresAccessTime,
+  expiresRefreshTime,
+} = require('../../helpers');
 const bCrypt = require('bcryptjs');
 
 const usersSchema = new Schema(
@@ -43,11 +47,9 @@ const usersSchema = new Schema(
   }
 );
 
-const usersService = model('users', usersSchema);
-
 usersSchema.pre('save', async function save(next) {
   try {
-    this.password = bCrypt.hashSync(this.password, bCrypt.genSaltSync(6));
+    this.password = await bCrypt.hash(this.password, await bCrypt.genSalt(6));
     return next();
   } catch (err) {
     return next(err);
@@ -57,19 +59,21 @@ usersSchema.pre('save', async function save(next) {
 usersSchema.methods = {
   validPassword: async function (password) {
     try {
-      return bCrypt.compareSync(password, this.password);
+      return await bCrypt.compare(password, this.password);
     } catch (error) {
       console.error(error);
     }
   },
   createAccessToken: function (sessionId) {
     const accessSecret = process.env.ACCESS_TOKEN_SECRET;
-    return createToken(sessionId, '10m', accessSecret);
+    return createToken(sessionId, expiresAccessTime, accessSecret);
   },
   createRefreshToken: function (sessionId) {
     const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
-    return createToken(sessionId, '1d', refreshSecret);
+    return createToken(sessionId, expiresRefreshTime, refreshSecret);
   },
 };
+
+const usersService = model('users', usersSchema);
 
 module.exports = usersService;

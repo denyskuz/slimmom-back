@@ -49,7 +49,6 @@ async function getDiaryByDate(req, res, next) {
   res.json({
     notes,
   });
-  next();
 }
 
 async function removeDiary(req, res, next) {

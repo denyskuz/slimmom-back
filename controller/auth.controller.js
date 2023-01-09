@@ -1,7 +1,7 @@
 const { Unauthorized } = require('http-errors');
 const { loginSchema, registrationSchema } = require('../validation');
 const { usersService, sessionServise } = require('../service');
-const refresh = require('../middleware');
+const { createCookie, cookieName } = require('../helpers');
 
 async function registration(req, res, next) {
   await registrationSchema.validateAsync(req.body);
@@ -28,15 +28,15 @@ async function login(req, res, next) {
     throw new Unauthorized('Incorrect login or password');
   }
   const session = await sessionServise.create({ owner: user._id });
-  const refreshToken = usersService.createRefreshToken(session._id);
-  const accessToken = usersService.createAccessToken(session._id);
+  const refreshToken = user.createRefreshToken(session._id);
+  const accessToken = user.createAccessToken(session._id);
+  createCookie(res, accessToken);
 
   const { name, age, height, currentWeight, bloodType, desiredWeight } = user;
 
   return res.json({
     status: 'success',
     data: {
-      accessToken,
       refreshToken,
       user: {
         email,
@@ -52,23 +52,27 @@ async function login(req, res, next) {
 }
 
 async function logout(req, res, next) {
-  const { _id } = req.session;
-  await sessionServise.findByIdAndDelete(_id);
+  const { owner } = req.session;
+  await sessionServise.deleteMany({ owner });
+  res.clearCookie(cookieName);
   return res.status(204).json();
 }
 
 async function refresh(req, res, next) {
-  const accessToken = usersService.createAccessToken(session._id);
+  const { session } = req;
+  const accessToken = session.owner.createAccessToken(session._id);
+  createCookie(res, accessToken);
+  return res.status(200).json();
 }
 
 async function current(req, res, next) {
   const { session } = req;
   const { email, name, age, height, currentWeight, bloodType, desiredWeight } =
-  session.owner;
+    session.owner;
+
   return res.status(200).json({
     status: 'success',
     data: {
-      accessToken,
       user: {
         email,
         name,
@@ -87,4 +91,5 @@ module.exports = {
   login,
   logout,
   current,
+  refresh,
 };
