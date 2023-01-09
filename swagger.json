@@ -111,6 +111,24 @@
         }
       }
     },
+    "/api/auth/refresh": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Refresh user access token",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success response"
+          },
+          "401": {
+            "description": "Missing header with refresh token"
+          }
+        }
+      }
+    },
     "/api/auth/logout": {
       "get": {
         "tags": [
@@ -124,7 +142,7 @@
             "description": "Success response"
           },
           "401": {
-            "description": "Missing header with authorization token"
+            "description": "Missing authorization token"
           },
           "404": {
             "description": "Invalid user / Invalid session"
@@ -155,7 +173,7 @@
             "description": "Bad request"
           },
           "401": {
-            "description": "Missing header with authorization token"
+            "description": "Missing authorization token"
           }
         },
         "requestBody": {
@@ -203,7 +221,7 @@
             "description": "Bad request"
           },
           "401": {
-            "description": "Missing header with authorization token"
+            "description": "Missing authorization token"
           }
         }
       }
@@ -240,7 +258,7 @@
             "description": "Bad request"
           },
           "401": {
-            "description": "Missing header with authorization token"
+            "description": "Missing authorization token"
           }
         }
       }
@@ -401,7 +419,7 @@
             "description": "Bad request"
           },
           "401": {
-            "description": "Missing header with authorization token"
+            "description": "Missing authorization token"
           }
         },
         "requestBody": {
@@ -436,7 +454,7 @@
             }
           },
           "401": {
-            "description": "Missing header with authorization token"
+            "description": "Missing authorization token"
           }
         }
       }
@@ -713,7 +731,7 @@
           "data": {
             "type": "object",
             "properties": {
-              "accessToken": {
+              "refreshToken": {
                 "type": "string",
                 "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzYTI2NDhkYmYwOWUwNzA3NTVkODliZSIsImVtYWlsIjoidXNlckBnbWFpbC5jb20iLCJpYXQiOjE2NzE1ODgxNDksImV4cCI6MTY3MTU5MTc0OX0.jJSyyA21txMSU4mw-TEPK1afpF2v9--jICFNDnuLwKM"
               },
@@ -762,7 +780,7 @@
               }
             },
             "required": [
-              "accessToken",
+              "refreshToken",
               "user"
             ],
             "additionalProperties": false
@@ -2066,7 +2084,7 @@
                   "properties": {
                     "type": "object",
                     "properties": {
-                      "accessToken": {
+                      "refreshToken": {
                         "type": "object",
                         "properties": {
                           "type": {
@@ -2223,7 +2241,7 @@
                   "required": {
                     "type": "array",
                     "example": [
-                      "accessToken",
+                      "refreshToken",
                       "user"
                     ],
                     "items": {
