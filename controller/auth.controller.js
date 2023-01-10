@@ -1,15 +1,11 @@
 const { Unauthorized } = require('http-errors');
-const jwt = require('jsonwebtoken');
-const { nanoid } = require('nanoid');
 const { loginSchema, registrationSchema } = require('../validation');
-const { usersService } = require('../service');
-
-const secret = process.env.SECRET;
+const { usersService, sessionServise } = require('../service');
+const { createCookie, cookieName } = require('../helpers');
 
 async function registration(req, res, next) {
-  const accessToken = nanoid();
   await registrationSchema.validateAsync(req.body);
-  const newUser = await usersService.create({ accessToken, ...req.body });
+  const newUser = await usersService.create({ ...req.body });
 
   return res.status(201).json({
     status: 'success',
@@ -31,19 +27,17 @@ async function login(req, res, next) {
   if (!user || !user.validPassword(password)) {
     throw new Unauthorized('Incorrect login or password');
   }
-  const payload = {
-    id: user.id,
-    email: user.email,
-  };
+  const session = await sessionServise.create({ owner: user._id });
+  const refreshToken = user.createRefreshToken(session._id);
+  const accessToken = user.createAccessToken(session._id);
+  createCookie(res, accessToken);
 
-  const accessToken = jwt.sign(payload, secret, { expiresIn: '1h' });
-  await usersService.findByIdAndUpdate(user._id, { accessToken });
   const { name, age, height, currentWeight, bloodType, desiredWeight } = user;
 
   return res.json({
     status: 'success',
     data: {
-      accessToken,
+      refreshToken,
       user: {
         email,
         name,
@@ -58,16 +52,24 @@ async function login(req, res, next) {
 }
 
 async function logout(req, res, next) {
-  const { _id } = req.user;
-  await usersService.findByIdAndUpdate(_id, { accessToken: '' });
+  const { owner } = req.session;
+  await sessionServise.deleteMany({ owner });
+  res.clearCookie(cookieName);
   return res.status(204).json();
 }
 
+async function refresh(req, res, next) {
+  const { session } = req;
+  const accessToken = session.owner.createAccessToken(session._id);
+  createCookie(res, accessToken);
+  return res.status(200).json();
+}
+
 async function current(req, res, next) {
-  const { user } = req;
-  console.log('user', user);
+  const { session } = req;
   const { email, name, age, height, currentWeight, bloodType, desiredWeight } =
-    user;
+    session.owner;
+
   return res.status(200).json({
     status: 'success',
     data: {
@@ -89,4 +91,5 @@ module.exports = {
   login,
   logout,
   current,
+  refresh,
 };

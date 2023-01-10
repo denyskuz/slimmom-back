@@ -1,8 +1,8 @@
 const passport = require('passport');
 const { Unauthorized } = require('http-errors');
 
-const auth = (req, res, next) => {
-  passport.authenticate("cookie", { session: false }, (err, session) => {
+const refresh = (req, res, next) => {
+  passport.authenticate('jwt', { session: false }, (err, session) => {
     if (!session || err) {
       return next(Unauthorized());
     }
@@ -11,4 +11,4 @@ const auth = (req, res, next) => {
   })(req, res, next);
 };
 
-module.exports = auth;
+module.exports = refresh;

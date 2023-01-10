@@ -1,4 +1,9 @@
 const { Schema, model } = require('mongoose');
+const {
+  createToken,
+  expiresAccessTime,
+  expiresRefreshTime,
+} = require('../../helpers');
 const bCrypt = require('bcryptjs');
 
 const usersSchema = new Schema(
@@ -15,10 +20,6 @@ const usersSchema = new Schema(
       type: String,
       required: [true, 'Email is required'],
       unique: true,
-    },
-    accessToken: {
-      type: String,
-      required: [true, 'Access token is required'],
     },
     height: {
       type: Number,
@@ -48,15 +49,29 @@ const usersSchema = new Schema(
 
 usersSchema.pre('save', async function save(next) {
   try {
-    this.password = bCrypt.hashSync(this.password, bCrypt.genSaltSync(6));
+    this.password = await bCrypt.hash(this.password, await bCrypt.genSalt(6));
     return next();
   } catch (err) {
     return next(err);
   }
 });
 
-usersSchema.methods.validPassword = function (password) {
-  return bCrypt.compareSync(password, this.password);
+usersSchema.methods = {
+  validPassword: async function (password) {
+    try {
+      return await bCrypt.compare(password, this.password);
+    } catch (error) {
+      console.error(error);
+    }
+  },
+  createAccessToken: function (sessionId) {
+    const accessSecret = process.env.ACCESS_TOKEN_SECRET;
+    return createToken(sessionId, expiresAccessTime, accessSecret);
+  },
+  createRefreshToken: function (sessionId) {
+    const refreshSecret = process.env.REFRESH_TOKEN_SECRET;
+    return createToken(sessionId, expiresRefreshTime, refreshSecret);
+  },
 };
 
 const usersService = model('users', usersSchema);

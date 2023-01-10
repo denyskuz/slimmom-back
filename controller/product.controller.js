@@ -32,7 +32,7 @@ async function getCalories(req, res, next) {
 }
 
 async function getCategories(req, res, next) {
-  const user = req.user;
+  const user = req.session.owner;
   await categoriesQuerySchema.validateAsync(req.query);
   const { skip, limit } = pageParams(req.query);
 
